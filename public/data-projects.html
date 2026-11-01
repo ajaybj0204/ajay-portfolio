@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data & Automation Projects — Ajay B J</title>
+<link rel="icon" href="/favicon.svg">
+<meta name="description" content="Excel, SQL, Power BI, fintech payments analysis, payment reconciliation and automation projects built on real public datasets.">
+<style>
+/* ===== Theme tokens — change these to match the main portfolio ===== */
+:root{
+  --bg:#0b0f17; --surface:#121826; --surface-2:#182033; --line:#243049;
+  --text:#eef1f6; --text-2:#a9b3c6; --muted:#7c879c;
+  --accent:#5eead4; --accent-2:#818cf8;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+  --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+  --radius:16px; --font:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#f6f7fb; --surface:#ffffff; --surface-2:#f1f4f9; --line:#e2e7f0;
+  --text:#0f172a; --text-2:#475569; --muted:#64748b;
+  --accent:#0f766e; --accent-2:#4f46e5;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100;
+  --warn:#a14a07; --muted:#556275;
+  color-scheme:light;
+}
+*{box-sizing:border-box} .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap} html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)} :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{font-weight:700;letter-spacing:-.01em;text-decoration:none;color:var(--text)}
+.brand span{color:var(--accent)}
+.iconbtn{background:var(--surface);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:7px 12px;cursor:pointer;font:inherit;font-size:13px}
+section{padding:56px 0}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-size:clamp(30px,4.5vw,46px);line-height:1.1;letter-spacing:-.025em;margin:10px 0 14px}
+h1 .grad{background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:26px;letter-spacing:-.02em;margin:0 0 6px} h3{font-size:17px;margin:0 0 6px;letter-spacing:-.01em}
+.lead{color:var(--text-2);max-width:760px;font-size:16.5px}
+.note{margin-top:18px;display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--text-2);font-size:13.5px;max-width:820px}
+.note b{color:var(--text)}
+/* filters */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 20px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--text-2);padding:6px 14px;border-radius:999px;cursor:pointer;font:inherit;font-size:13px}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{position:relative;background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:10px;transition:transform .2s,border-color .2s,opacity .25s}
+.card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.card.hide{display:none}
+.card .num{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.badge.progress{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,transparent);background:color-mix(in srgb,var(--warn) 10%,transparent)}
+.badge.planned{color:var(--muted);border-color:var(--line)}
+.badge.done{color:var(--good);border-color:color-mix(in srgb,var(--good) 40%,transparent);background:color-mix(in srgb,var(--good) 10%,transparent)}
+.stage{font-size:12px;color:var(--muted)}
+.card p{margin:0;color:var(--text-2);font-size:14px}
+.finding{font-size:13.5px;color:var(--text);background:color-mix(in srgb,var(--accent) 8%,transparent);border-left:3px solid var(--accent);padding:8px 10px;border-radius:0 8px 8px 0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.tag{font-size:11.5px;color:var(--text-2);background:var(--bg);border:1px solid var(--line);padding:2px 8px;border-radius:6px}
+.meta{font-size:12px;color:var(--muted)}
+.links{display:flex;gap:10px;flex-wrap:wrap}
+.btn{font-size:13px;text-decoration:none;border:1px solid var(--line);padding:6px 12px;border-radius:9px;color:var(--text);background:var(--bg)}
+.btn.primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn[aria-disabled="true"]{opacity:.5;pointer-events:none}
+/* dashboards */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:22px 0 22px;overflow-x:auto}
+.tab{background:none;border:0;color:var(--text-2);padding:10px 14px;font:inherit;font-size:14px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--text);border-bottom-color:var(--accent)}
+.panel{display:none} .panel.on{display:block}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+.kpi .l{font-size:12px;color:var(--muted)} .kpi .v{font-size:24px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpi .s{font-size:12px;color:var(--text-2)}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:16px}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;position:relative;min-width:0}
+.chart h3{font-size:15px} .chart .sub{font-size:12.5px;color:var(--muted);margin:-2px 0 10px}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart svg text{fill:var(--text-2);font:12px var(--font)} .chart svg .val{fill:var(--text);font-weight:600}
+.chart svg .grid{stroke:var(--line);stroke-width:1} .chart svg .axis{fill:var(--muted);font-size:11px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--text-2);margin-top:6px}
+.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.tip{position:absolute;pointer-events:none;background:var(--text);color:var(--bg);font-size:12px;padding:6px 9px;border-radius:8px;white-space:nowrap;opacity:0;transition:opacity .1s;z-index:5}
+.insights{margin:16px 0 0;padding:16px 18px 16px 34px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);color:var(--text-2);font-size:14px}
+.insights li{margin:4px 0} .insights b{color:var(--text)}
+table.t{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+table.t th{text-align:left;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:6px 8px}
+table.t td{border-bottom:1px solid var(--line);padding:6px 8px;color:var(--text-2)} table.t td.r,table.t th.r{text-align:right}
+details{margin-top:10px;font-size:13px;color:var(--text-2)} summary{cursor:pointer;color:var(--accent)}
+pre{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12px;line-height:1.5;color:var(--text-2)}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good)}
+.sim{color:var(--warn);font-weight:600}
+.shot{width:100%;border-radius:12px;border:1px solid var(--line);background:#fff}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
+.totop{position:fixed;right:18px;bottom:18px;opacity:0;pointer-events:none;transition:opacity .2s}
+.totop.show{opacity:1;pointer-events:auto}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="/">Ajay B J<span>.</span></a>
+  <div style="display:flex;gap:8px;align-items:center"><a class="iconbtn" href="/#projects" style="text-decoration:none">← Portfolio</a>
+  <button class="iconbtn" id="theme" aria-label="Toggle light or dark theme">☀ Light</button></div>
+</div></header>
+
+<main id="top">
+<section><div class="wrap">
+  <div class="eyebrow">Projects · Data & Automation</div>
+  <h1>Turning raw transactions into <span class="grad">decisions</span></h1>
+  <p class="lead">Eight analytics and automation projects built on <b>real public datasets</b>: about 100,000 orders from Olist, a Brazilian marketplace, and the Superstore Sales dataset. Each one connects to work I did in fintech operations: payments, reconciliation, SLAs and reporting.</p>
+  <div class="note" role="note"><span aria-hidden="true">ⓘ</span><div><b>How to read the status labels.</b> These projects were built with AI assistance, and I'm reviewing and rebuilding the key steps myself. A project moves to <b>Completed</b> only once I can explain and reproduce every step on my own. Datasets are historical (2009–2018), not live. One file, the gateway settlement file in Project 5, is <span class="sim">simulated</span> because real settlement files are never published.</div></div>
+
+  <h2 class="sr-only">The eight projects</h2>
+  <div class="chips" role="group" aria-label="Filter projects" id="chips"></div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<section id="dashboards" style="padding-top:8px"><div class="wrap">
+  <div class="eyebrow">Live results</div>
+  <h2>Dashboards from the analysis</h2>
+  <p class="lead" style="font-size:15px">Every number below was calculated from the datasets by the scripts in each project folder. Hover over a chart for exact values.</p>
+  <div class="tabs" role="tablist" id="tabs">
+    <button class="tab" role="tab" aria-selected="true" data-p="pay">Payments analysis</button>
+    <button class="tab" role="tab" aria-selected="false" data-p="rec">Reconciliation</button>
+    <button class="tab" role="tab" aria-selected="false" data-p="ops">Operations KPIs</button>
+    <button class="tab" role="tab" aria-selected="false" data-p="sql">SQL highlights</button>
+    <button class="tab" role="tab" aria-selected="false" data-p="xl">Excel dashboard</button>
+  </div>
+
+  <!-- PAYMENTS -->
+  <div class="panel on" id="p-pay" role="tabpanel">
+    <div class="kpis" id="pay-kpis"></div>
+    <div class="charts">
+      <div class="chart"><h3>Credit card carries 78% of payment value</h3><div class="sub">Share of total payment value by method</div><div id="c-mix"></div></div>
+      <div class="chart"><h3>Boleto payments take ~29 hours to approve</h3><div class="sub">Median hours from purchase to payment approval</div><div id="c-lag"></div></div>
+      <div class="chart" style="grid-column:1/-1"><h3>Monthly payment value by method</h3><div class="sub">R$, Jan 2017 – Aug 2018 · Olist</div><div id="c-pmonth"></div></div>
+      <div class="chart"><h3>Two in three card payments use instalments</h3><div class="sub">Share of credit-card transactions by number of instalments</div><div id="c-inst"></div></div>
+      <div class="chart"><h3>Bigger baskets, more instalments</h3><div class="sub">Average ticket (R$) by instalment band</div><div id="c-instt"></div></div>
+    </div>
+    <ul class="insights" id="pay-ins"></ul>
+  </div>
+
+  <!-- RECONCILIATION -->
+  <div class="panel" id="p-rec" role="tabpanel">
+    <div class="kpis" id="rec-kpis"></div>
+    <div class="charts">
+      <div class="chart"><h3>Exceptions by type</h3><div class="sub">Count of transactions, Jun–Aug 2018</div><div id="c-exc"></div></div>
+      <div class="chart"><h3>Money at risk by exception type</h3><div class="sub">Exposure in R$ (late settlements are timing-only, so R$0)</div><div id="c-expo"></div></div>
+      <div class="chart" style="grid-column:1/-1"><h3>Exceptions per week</h3><div class="sub">All exception types combined · full weeks only (4 Jun – 26 Aug 2018), by settlement date</div><div id="c-wk"></div></div>
+      <div class="chart" style="grid-column:1/-1"><h3>Top exceptions to work first</h3><div class="sub">Sorted by exposure. This is the analyst's worklist.</div><div id="t-top"></div></div>
+    </div>
+    <ul class="insights" id="rec-ins"></ul>
+  </div>
+
+  <!-- OPS -->
+  <div class="panel" id="p-ops" role="tabpanel">
+    <div class="kpis" id="ops-kpis"></div>
+    <div class="charts">
+      <div class="chart" style="grid-column:1/-1"><h3>On-time delivery rate by month</h3><div class="sub">Delivered on or before the promised date · note the Nov 2017 peak-season dip and the Mar 2018 carrier incident</div><div id="c-ontime"></div></div>
+      <div class="chart"><h3>Late deliveries destroy satisfaction</h3><div class="sub">Average review score (1–5) by delivery timing</div><div id="c-delay"></div></div>
+      <div class="chart"><h3>States with the lowest on-time rate</h3><div class="sub">States with 300+ delivered orders, worst 8</div><div id="c-states"></div></div>
+    </div>
+    <ul class="insights" id="ops-ins"></ul>
+  </div>
+
+  <!-- SQL -->
+  <div class="panel" id="p-sql" role="tabpanel">
+    <div class="charts" id="sql-wrap"></div>
+  </div>
+
+  <!-- EXCEL -->
+  <div class="panel" id="p-xl" role="tabpanel">
+    <div class="chart">
+      <h3>Superstore Sales Performance Dashboard (Excel)</h3>
+      <div class="sub">Year and Region dropdowns drive every KPI, table and chart through SUMIFS formulas (25,000+ formulas, 0 errors). Includes a cleaning log.</div>
+      <img class="shot" src="assets/excel-dashboard.png" alt="Screenshot of the Excel dashboard showing KPI tiles, sales by category and region tables, and a monthly trend chart" loading="lazy">
+    </div>
+    <ul class="insights" id="xl-ins"></ul>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">Data: Olist Brazilian E-Commerce Public Dataset (CC BY-NC-SA 4.0) · Superstore Sales sample dataset. Built by Ajay B J with AI-assisted development.</div></footer>
+<button class="iconbtn totop" id="totop" aria-label="Back to top">↑ Top</button>
+<div class="tip" id="tip" aria-hidden="true"></div>
+
+<script>
+/* ======================= EDIT YOUR PROJECTS HERE =======================
+   status: "progress" | "planned" | "done"
+   code:   your GitHub folder URL (leave "" until the repo is public)        */
+const PROJECTS = [
+ {
+  "n": "6.1",
+  "title": "Excel Sales Reporting Dashboard",
+  "cats": [
+   "Excel",
+   "Reporting"
+  ],
+  "status": "progress",
+  "stage": "Built · reviewing formulas myself",
+  "dash": "xl",
+  "folder": "01-excel-sales-dashboard",
+  "problem": "A sales manager needs one sheet that answers 'how are we doing?' for any year and region, with no pivot-table fiddling.",
+  "finding": "Furniture is 35% of sales but earns only a 2.3% margin. Discounts above 8% roughly halve margin.",
+  "data": "Superstore Sales, 8,399 order lines, 2009–2012",
+  "tools": [
+   "Excel",
+   "SUMIFS",
+   "Data validation",
+   "Charts",
+   "Data cleaning"
+  ],
+  "code": ""
+ },
+ {
+  "n": "6.2",
+  "title": "SQL E-commerce Analysis",
+  "cats": [
+   "SQL"
+  ],
+  "status": "progress",
+  "stage": "10 business questions answered · reviewing",
+  "dash": "sql",
+  "folder": "02-sql-ecommerce-analysis",
+  "problem": "Answer the questions leadership actually asks (growth, mix, delivery, retention) straight from a relational database.",
+  "finding": "Only 3% of customers ever buy twice. The marketplace acquires but doesn't retain.",
+  "data": "Olist, 8 tables, ~100k orders, 2016–2018",
+  "tools": [
+   "SQL",
+   "JOINs",
+   "CTEs",
+   "Window functions",
+   "SQLite"
+  ],
+  "code": ""
+ },
+ {
+  "n": "6.3",
+  "title": "Power BI E-commerce Dashboard",
+  "cats": [
+   "Power BI"
+  ],
+  "status": "progress",
+  "stage": "Star schema + 20 DAX measures ready · .pbix to build",
+  "dash": "",
+  "folder": "03-powerbi-ecommerce-dashboard",
+  "problem": "Give managers a self-serve, filterable view of sales, operations and payments.",
+  "finding": "Data modelled into 2 fact + 4 dimension tables. Every DAX measure has a Python-verified expected value.",
+  "data": "Olist (modelled)",
+  "tools": [
+   "Power BI",
+   "DAX",
+   "Star schema",
+   "Power Query"
+  ],
+  "code": ""
+ },
+ {
+  "n": "6.4",
+  "title": "Fintech Payments Transaction Analysis",
+  "cats": [
+   "Fintech",
+   "Python"
+  ],
+  "status": "progress",
+  "stage": "Analysis + dashboard built · reviewing",
+  "dash": "pay",
+  "folder": "04-fintech-payments-analysis",
+  "problem": "Understand how customers pay, how fast payments clear, and where payment-related risk sits.",
+  "finding": "Boleto payments take a median 29 hours to approve vs 16 minutes for cards, which delays fulfilment for 1 in 5 orders.",
+  "data": "Olist payments, 103,883 transactions",
+  "tools": [
+   "Python",
+   "pandas",
+   "Payments analytics",
+   "Data viz"
+  ],
+  "code": ""
+ },
+ {
+  "n": "6.5",
+  "title": "Payment Reconciliation Engine",
+  "cats": [
+   "Fintech",
+   "Python",
+   "Automation"
+  ],
+  "status": "progress",
+  "stage": "Engine built & tested · reviewing",
+  "dash": "rec",
+  "folder": "05-payment-reconciliation",
+  "problem": "Match a merchant's ledger to the gateway's settlement file every day and turn mismatches into a prioritised worklist.",
+  "finding": "Caught 537 of 537 planted errors in the right category with 0 false alarms, across 18,644 transactions.",
+  "data": "Real Olist payments vs a simulated gateway settlement file",
+  "tools": [
+   "Python",
+   "Reconciliation",
+   "Excel output",
+   "Testing"
+  ],
+  "code": ""
+ },
+ {
+  "n": "6.6",
+  "title": "Daily Ops Report Automation",
+  "cats": [
+   "Automation",
+   "Python"
+  ],
+  "status": "progress",
+  "stage": "Script works for any date · scheduling next",
+  "dash": "",
+  "folder": "06-report-automation",
+  "problem": "Replace a manual export → pivot → copy → email routine with one command that runs on a schedule.",
+  "finding": "One command produces the Excel report, a ready-to-send email and an audit log, for one day or a week of backfill.",
+  "data": "Olist (daily snapshots)",
+  "tools": [
+   "Python",
+   "Scheduling (cron)",
+   "openpyxl",
+   "Logging"
+  ],
+  "code": ""
+ },
+ {
+  "n": "6.7",
+  "title": "Operational KPI Dashboard",
+  "cats": [
+   "Operations",
+   "Python"
+  ],
+  "status": "progress",
+  "stage": "KPIs defined + dashboard built · reviewing",
+  "dash": "ops",
+  "folder": "07-operations-kpi-dashboard",
+  "problem": "Define and track the fulfilment KPIs an ops lead reviews every week: on-time %, dispatch SLA, cancellations, CSAT.",
+  "finding": "Orders 8+ days late average a 1.7/5 review vs 4.3 when early. Delivery timing drives satisfaction.",
+  "data": "Olist fulfilment data, 99,092 orders",
+  "tools": [
+   "KPI design",
+   "Python",
+   "SLA tracking",
+   "Data viz"
+  ],
+  "code": ""
+ },
+ {
+  "n": "6.8",
+  "title": "BRD: Automated Payment Reconciliation",
+  "cats": [
+   "Business Analysis"
+  ],
+  "status": "progress",
+  "stage": "Draft BRD written · linked to working prototype",
+  "dash": "",
+  "folder": "08-brd-reconciliation-case-study",
+  "problem": "Write the requirements a business analyst would hand to a build team before automating reconciliation.",
+  "finding": "12 functional requirements, business rules, UAT acceptance criteria and a to-be process, traced to the Project 6.5 prototype.",
+  "data": "Practice case study (fictional business context)",
+  "tools": [
+   "Requirements",
+   "Process mapping",
+   "UAT",
+   "Stakeholders"
+  ],
+  "code": ""
+ }
+];
+const D = {"pay": {"mix": [{"method": "Credit card", "txns": 76795, "value": 12542084.19, "avg_ticket": 163.319, "txn_share": 0.7392, "value_share": 0.7834}, {"method": "Boleto (bank slip)", "txns": 19784, "value": 2869361.27, "avg_ticket": 145.0344, "txn_share": 0.1904, "value_share": 0.1792}, {"method": "Voucher", "txns": 5775, "value": 379436.87, "avg_ticket": 65.7034, "txn_share": 0.0556, "value_share": 0.0237}, {"method": "Debit card", "txns": 1529, "value": 217989.79, "avg_ticket": 142.5702, "txn_share": 0.0147, "value_share": 0.0136}], "totals": {"txns": 103883, "value": 16008872.12, "orders": 99437, "avg_ticket": 154.1}, "monthly": {"months": ["2017-01", "2017-02", "2017-03", "2017-04", "2017-05", "2017-06", "2017-07", "2017-08", "2017-09", "2017-10", "2017-11", "2017-12", "2018-01", "2018-02", "2018-03", "2018-04", "2018-05", "2018-06", "2018-07", "2018-08"], "series": {"Boleto (bank slip)": [24074.0, 57477.0, 82161.0, 81307.0, 128653.0, 107774.0, 116775.0, 134290.0, 131042.0, 140633.0, 226292.0, 165584.0, 204845.0, 183113.0, 191538.0, 193547.0, 195379.0, 153350.0, 198041.0, 143806.0], "Credit card": [109616.0, 226754.0, 354489.0, 322088.0, 445047.0, 388268.0, 454988.0, 521596.0, 574484.0, 614328.0, 942857.0, 682860.0, 868880.0, 778803.0, 933770.0, 934306.0, 927556.0, 811509.0, 803674.0, 797649.0], "Debit card": [744.0, 1510.0, 3593.0, 2790.0, 3023.0, 2424.0, 2345.0, 3137.0, 4690.0, 5777.0, 6168.0, 7125.0, 11544.0, 7470.0, 8375.0, 10783.0, 9711.0, 35673.0, 44866.0, 46001.0], "Voucher": [4054.0, 6167.0, 9621.0, 11603.0, 16195.0, 12810.0, 18274.0, 15374.0, 17546.0, 18940.0, 19566.0, 22832.0, 29736.0, 23078.0, 25969.0, 22150.0, 21336.0, 23349.0, 19959.0, 34969.0]}}, "installments": [{"band": "1 (full)", "txns": 25454, "avg_ticket": 95.8751, "share": 0.3315}, {"band": "2–3", "txns": 22874, "avg_ticket": 134.2304, "share": 0.2979}, {"band": "4–6", "txns": 16257, "avg_ticket": 181.3184, "share": 0.2117}, {"band": "7–10", "txns": 11867, "avg_ticket": 333.8009, "share": 0.1545}, {"band": "11+", "txns": 341, "avg_ticket": 358.3448, "share": 0.0044}], "cc_multi_installment_share": 0.6685, "approval_lag_hours": [{"method": "Boleto (bank slip)", "median": 29.06, "p90": 67.27, "n": 19753, "over_24h": 0.57}, {"method": "Credit card", "median": 0.27, "p90": 21.52, "n": 76420, "over_24h": 0.07}, {"method": "Debit card", "median": 0.85, "p90": 23.97, "n": 1477, "over_24h": 0.1}, {"method": "Voucher", "median": 0.31, "p90": 27.97, "n": 1550, "over_24h": 0.17}], "failure": [{"method": "Boleto (bank slip)", "orders": 19783, "cancelled_or_unavailable": 245, "rate": 0.0124}, {"method": "Credit card", "orders": 76476, "cancelled_or_unavailable": 887, "rate": 0.0116}, {"method": "Debit card", "orders": 1477, "cancelled_or_unavailable": 12, "rate": 0.0081}, {"method": "Voucher", "orders": 1621, "cancelled_or_unavailable": 86, "rate": 0.0531}], "split_payment_orders": 3039, "split_payment_share": 0.0306, "ticket_bands": [{"band": "≤ R$50", "txns": 21399, "value": 710500.71, "txn_share": 0.206, "value_share": 0.0444}, {"band": "R$50–100", "txns": 30708, "value": 2256313.82, "txn_share": 0.2956, "value_share": 0.1409}, {"band": "R$100–200", "txns": 31669, "value": 4500120.61, "txn_share": 0.3049, "value_share": 0.2811}, {"band": "R$200–500", "txns": 15851, "value": 4599714.43, "txn_share": 0.1526, "value_share": 0.2873}, {"band": "> R$500", "txns": 4256, "value": 3942222.55, "txn_share": 0.041, "value_share": 0.2463}]}, "ops": {"kpis": {"orders": 99092, "delivered": 96203, "on_time_rate": 0.9321, "avg_delivery_days": 12.5, "median_delivery_days": 10.2, "dispatch_sla_rate": 0.9105, "cancel_rate": 0.0119, "median_approval_h": 0.34, "csat": 4.09, "bad_review_rate": 0.1458}, "monthly": {"months": ["2017-01", "2017-02", "2017-03", "2017-04", "2017-05", "2017-06", "2017-07", "2017-08", "2017-09", "2017-10", "2017-11", "2017-12", "2018-01", "2018-02", "2018-03", "2018-04", "2018-05", "2018-06", "2018-07", "2018-08"], "orders": [800, 1780, 2682, 2404, 3700, 3245, 4026, 4331, 4285, 4631, 7544, 5673, 7269, 6728, 7211, 6939, 6873, 6167, 6292, 6512], "cancel": [0.0162, 0.0348, 0.0242, 0.0112, 0.0162, 0.0123, 0.0199, 0.0136, 0.0135, 0.0181, 0.016, 0.0093, 0.0113, 0.0153, 0.006, 0.0029, 0.0058, 0.0036, 0.0094, 0.014], "csat": [4.0627, 4.0158, 4.0746, 4.0461, 4.1421, 4.1478, 4.1754, 4.2374, 4.1878, 4.1245, 3.9108, 4.0189, 4.0418, 3.8273, 3.7536, 4.1625, 4.194, 4.2775, 4.2632, 4.2562], "delivered": [750, 1653, 2546, 2303, 3545, 3135, 3872, 4193, 4150, 4478, 7288, 5513, 7069, 6555, 7003, 6798, 6749, 6096, 6156, 6351], "on_time": [0.9707, 0.9704, 0.9544, 0.9344, 0.9701, 0.9697, 0.9721, 0.9709, 0.9561, 0.9582, 0.876, 0.9254, 0.943, 0.8587, 0.8104, 0.955, 0.9344, 0.9884, 0.9662, 0.9381], "days": [12.647, 13.1688, 12.9512, 14.9179, 11.3224, 12.0116, 11.5927, 11.1471, 11.851, 11.8567, 15.1611, 15.3949, 14.0806, 16.9451, 16.3014, 11.4992, 11.419, 9.2392, 8.9586, 7.7328], "dispatch": [0.7768, 0.8226, 0.9321, 0.9273, 0.9267, 0.9205, 0.9216, 0.9317, 0.9283, 0.9215, 0.8712, 0.891, 0.8976, 0.8773, 0.9148, 0.9403, 0.9341, 0.9321, 0.9109, 0.9087]}, "states": [{"state": "AL", "delivered": 396, "on_time": 0.7854, "days": 24.5223, "csat": 3.8524}, {"state": "MA", "delivered": 713, "on_time": 0.8247, "days": 21.5356, "csat": 3.83}, {"state": "SE", "delivered": 332, "on_time": 0.8464, "days": 21.4386, "csat": 3.9003}, {"state": "PI", "delivered": 475, "on_time": 0.8611, "days": 19.4408, "csat": 3.9936}, {"state": "CE", "delivered": 1273, "on_time": 0.8617, "days": 21.2385, "csat": 3.9376}, {"state": "BA", "delivered": 3253, "on_time": 0.8783, "days": 19.3341, "csat": 3.9296}, {"state": "RJ", "delivered": 12310, "on_time": 0.8786, "days": 15.2968, "csat": 3.9652}, {"state": "PA", "delivered": 942, "on_time": 0.8875, "days": 23.7571, "csat": 3.9085}, {"state": "ES", "delivered": 1992, "on_time": 0.8926, "days": 15.7757, "csat": 4.0799}, {"state": "PB", "delivered": 516, "on_time": 0.8953, "days": 20.3933, "csat": 4.0744}, {"state": "MS", "delivered": 701, "on_time": 0.903, "days": 15.6183, "csat": 4.1602}, {"state": "PE", "delivered": 1587, "on_time": 0.9036, "days": 18.4499, "csat": 4.082}, {"state": "RN", "delivered": 470, "on_time": 0.9064, "days": 19.2109, "csat": 4.1424}, {"state": "SC", "delivered": 3537, "on_time": 0.9177, "days": 14.9461, "csat": 4.1339}, {"state": "GO", "delivered": 1950, "on_time": 0.9344, "days": 15.6116, "csat": 4.1021}, {"state": "RS", "delivered": 5327, "on_time": 0.939, "days": 15.2887, "csat": 4.186}, {"state": "MT", "delivered": 885, "on_time": 0.9401, "days": 18.0682, "csat": 4.1452}, {"state": "DF", "delivered": 2074, "on_time": 0.9431, "days": 12.9386, "csat": 4.1366}, {"state": "MG", "delivered": 11319, "on_time": 0.9541, "days": 11.9845, "csat": 4.1938}, {"state": "SP", "delivered": 40399, "on_time": 0.955, "days": 8.7376, "csat": 4.2473}, {"state": "PR", "delivered": 4903, "on_time": 0.9594, "days": 11.9731, "csat": 4.2408}], "delay_vs_csat": [{"delay_band": "8+ days early", "orders": 71046, "csat": 4.3179, "bad": 0.0892}, {"delay_band": "1–7 days early", "orders": 17335, "csat": 4.2014, "bad": 0.1019}, {"delay_band": "On the day", "orders": 1291, "csat": 4.0355, "bad": 0.1227}, {"delay_band": "1–3 days late", "orders": 1869, "csat": 3.2907, "bad": 0.322}, {"delay_band": "4–7 days late", "orders": 1802, "csat": 2.1055, "bad": 0.6756}, {"delay_band": "8+ days late", "orders": 2860, "csat": 1.6981, "bad": 0.7917}], "status": {"delivered": 96211, "shipped": 1097, "unavailable": 602, "canceled": 580, "processing": 299, "invoiced": 296, "created": 5, "approved": 2}}, "rec": {"ledger_rows": 18644, "settlement_rows": 18568, "ledger_value": 3007991.52, "settled_net": 2925042.45, "match_rate": 0.9712, "summary": [{"status": "MATCHED", "transactions": 18134, "exposure_brl": 0.0, "share": 0.9712, "action": "None"}, {"status": "MISSING_IN_SETTLEMENT", "transactions": 149, "exposure_brl": 22730.64, "share": 0.008, "action": "Raise settlement query with gateway; confirm txn status"}, {"status": "NOT_IN_LEDGER", "transactions": 27, "exposure_brl": 5641.39, "share": 0.0014, "action": "Investigate source; refund or reverse if not ours"}, {"status": "DUPLICATE", "transactions": 46, "exposure_brl": 8296.54, "share": 0.0025, "action": "Flag over-settlement; arrange recovery / adjustment"}, {"status": "AMOUNT_MISMATCH", "transactions": 74, "exposure_brl": 590.0, "share": 0.004, "action": "Check partial capture / refund; claim difference"}, {"status": "FEE_MISMATCH", "transactions": 55, "exposure_brl": 89.91, "share": 0.0029, "action": "Claim fee difference against contracted MDR"}, {"status": "LATE_SETTLEMENT", "transactions": 186, "exposure_brl": 0.0, "share": 0.01, "action": "Log SLA breach; escalate if repeated"}], "by_method": {"boleto": {"AMOUNT_MISMATCH": 13, "DUPLICATE": 10, "FEE_MISMATCH": 12, "LATE_SETTLEMENT": 29, "MISSING_IN_SETTLEMENT": 29, "NOT_IN_LEDGER": 11}, "credit_card": {"AMOUNT_MISMATCH": 61, "DUPLICATE": 36, "FEE_MISMATCH": 40, "LATE_SETTLEMENT": 148, "MISSING_IN_SETTLEMENT": 119, "NOT_IN_LEDGER": 8}, "debit_card": {"AMOUNT_MISMATCH": 0, "DUPLICATE": 0, "FEE_MISMATCH": 3, "LATE_SETTLEMENT": 9, "MISSING_IN_SETTLEMENT": 1, "NOT_IN_LEDGER": 8}}, "top_exceptions": [{"txn_ref": "11658EF3BDFA-1", "method": "credit_card", "status": "MISSING_IN_SETTLEMENT", "exposure": 2187.42}, {"txn_ref": "C6772701A7CF-1", "method": "credit_card", "status": "DUPLICATE", "exposure": 1478.48}, {"txn_ref": "4044C5FAD995-1", "method": "credit_card", "status": "DUPLICATE", "exposure": 1125.36}, {"txn_ref": "6D9DA1DCC8D0-1", "method": "boleto", "status": "MISSING_IN_SETTLEMENT", "exposure": 760.09}, {"txn_ref": "3213C825FD43-1", "method": "boleto", "status": "MISSING_IN_SETTLEMENT", "exposure": 742.85}, {"txn_ref": "421BB69FC426-1", "method": "credit_card", "status": "DUPLICATE", "exposure": 588.14}, {"txn_ref": "628365400EC2-1", "method": "credit_card", "status": "DUPLICATE", "exposure": 570.52}, {"txn_ref": "35D4CBC28EF2-1", "method": "credit_card", "status": "MISSING_IN_SETTLEMENT", "exposure": 484.09}, {"txn_ref": "BE3F2215558F-1", "method": "credit_card", "status": "MISSING_IN_SETTLEMENT", "exposure": 480.33}, {"txn_ref": "727BE733CB84-1", "method": "credit_card", "status": "MISSING_IN_SETTLEMENT", "exposure": 477.77}, {"txn_ref": "267519BDBE13-1", "method": "credit_card", "status": "MISSING_IN_SETTLEMENT", "exposure": 402.16}, {"txn_ref": "UNKNOWN00004-1", "method": "boleto", "status": "NOT_IN_LEDGER", "exposure": 397.14}], "weekly": {"weeks": ["04 Jun", "11 Jun", "18 Jun", "25 Jun", "02 Jul", "09 Jul", "16 Jul", "23 Jul", "30 Jul", "06 Aug", "13 Aug", "20 Aug"], "series": {"MISSING_IN_SETTLEMENT": [16, 5, 18, 14, 10, 7, 11, 12, 9, 16, 17, 10], "NOT_IN_LEDGER": [0, 0, 0, 1, 3, 2, 3, 3, 4, 2, 4, 2], "DUPLICATE": [6, 5, 3, 3, 1, 0, 5, 5, 3, 6, 5, 2], "AMOUNT_MISMATCH": [5, 9, 8, 1, 9, 5, 5, 3, 8, 7, 4, 6], "FEE_MISMATCH": [4, 3, 7, 7, 2, 2, 5, 5, 7, 3, 8, 1], "LATE_SETTLEMENT": [4, 12, 12, 9, 15, 10, 7, 18, 19, 30, 21, 21]}}, "test": {"planted": 537, "flagged": 537, "correct": 537}}, "sql": [{"title": "Q6. Does late delivery hurt customer satisfaction?", "why": "CTE + CASE: does late delivery hurt reviews?", "sql": "WITH delivery AS (\n  SELECT o.order_id,\n         CASE WHEN o.order_delivered_customer_date <= o.order_estimated_delivery_date\n              THEN 'On time' ELSE 'Late' END AS delivery_status\n  FROM orders o\n  WHERE o.order_status = 'delivered'\n    AND o.order_delivered_customer_date IS NOT NULL\n)\nSELECT d.delivery_status,\n       COUNT(*)                     AS reviews,\n       ROUND(AVG(r.review_score),2) AS avg_review_score,\n       ROUND(100.0*AVG(CASE WHEN r.review_score <= 2 THEN 1 ELSE 0 END),1) AS pct_bad_reviews\nFROM delivery d\nJOIN reviews r ON r.order_id = d.order_id\nGROUP BY d.delivery_status;", "cols": ["delivery_status", "reviews", "avg_review_score", "pct_bad_reviews"], "rows": [["Late", "7,700", "2.57", "54.00"], ["On time", "88,653", "4.29", "9.20"]]}, {"title": "Q4. How do customers pay? (payment mix)", "why": "Window function SUM() OVER () for share of total", "sql": "SELECT\n  payment_type,\n  COUNT(*)                                             AS transactions,\n  ROUND(SUM(payment_value), 0)                         AS value_brl,\n  ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 1)   AS pct_of_transactions,\n  ROUND(AVG(payment_installments), 2)                  AS avg_installments\nFROM payments\nGROUP BY payment_type\nORDER BY transactions DESC;", "cols": ["payment_type", "transactions", "value_brl", "pct_of_transactions", "avg_installments"], "rows": [["credit_card", "76,795", "12,542,084.00", "73.90", "3.51"], ["boleto", "19,784", "2,869,361.00", "19.00", "1.00"], ["voucher", "5,775", "379,437.00", "5.60", "1.00"], ["debit_card", "1,529", "217,990.00", "1.50", "1.00"], ["not_defined", "3", "0.00", "0.00", "1.00"]]}, {"title": "Q8. How many customers come back? (repeat-purchase rate)", "why": "Avoiding the customer_id vs customer_unique_id trap", "sql": "-- In Olist, customer_id is per ORDER; customer_unique_id is the real person.\nWITH per_person AS (\n  SELECT c.customer_unique_id, COUNT(DISTINCT o.order_id) AS orders\n  FROM orders o JOIN customers c ON c.customer_id = o.customer_id\n  WHERE o.order_status = 'delivered'\n  GROUP BY c.customer_unique_id\n)\nSELECT COUNT(*)                                          AS unique_customers,\n       SUM(CASE WHEN orders > 1 THEN 1 ELSE 0 END)       AS repeat_customers,\n       ROUND(100.0*AVG(CASE WHEN orders > 1 THEN 1 ELSE 0 END),2) AS repeat_rate_pct\nFROM per_person;", "cols": ["unique_customers", "repeat_customers", "repeat_rate_pct"], "rows": [["93,358", "2,801", "3.00"]]}, {"title": "Q10. Data-quality check: do payments match order item totals?", "why": "Reconciliation logic in pure SQL, the bridge to Project 6.5", "sql": "-- Order value should equal SUM(price + freight). Differences come from\n-- interest on instalments, vouchers, or data errors.\nWITH items AS (\n  SELECT order_id, SUM(price + freight_value) AS item_total\n  FROM order_items GROUP BY order_id\n), pays AS (\n  SELECT order_id, SUM(payment_value) AS paid_total\n  FROM payments GROUP BY order_id\n)\nSELECT\n  CASE WHEN p.order_id IS NULL THEN 'No payment record'\n       WHEN i.order_id IS NULL THEN 'Payment but no items'\n       WHEN ABS(p.paid_total - i.item_total) <= 0.01 THEN 'Matched'\n       WHEN p.paid_total > i.item_total THEN 'Paid more than items'\n       ELSE 'Paid less than items' END AS match_status,\n  COUNT(*) AS orders\nFROM orders o\nLEFT JOIN items i ON i.order_id = o.order_id\nLEFT JOIN pays  p ON p.order_id = o.order_id\nGROUP BY match_status\nORDER BY orders DESC;", "cols": ["match_status", "orders"], "rows": [["Matched", "98,222"], ["Payment but no items", "775"], ["Paid more than items", "295"], ["Paid less than items", "148"], ["No payment record", "1"]]}], "xl": {"furn_margin": 0.0227, "furn_share": 0.3472, "tech_margin": 0.1481, "disc_hi": 0.075, "disc_lo": 0.1236, "loss_share": 0.5077}};
+/* ====================================================================== */
+
+const $ = s => document.querySelector(s);
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = {
+  brl: v => "R$ " + (Math.abs(v) >= 1e6 ? (v/1e6).toFixed(2)+"M" : Math.abs(v) >= 1e3 ? (v/1e3).toFixed(1)+"k" : v.toFixed(0)),
+  brl2: v => "R$ " + v.toLocaleString("en-IN",{maximumFractionDigits:2,minimumFractionDigits:2}),
+  pct: v => (v*100).toFixed(1)+"%", int: v => Math.round(v).toLocaleString("en-IN"),
+  h: v => v < 1 ? Math.round(v*60)+" min" : v.toFixed(1)+" h", n1: v => v.toFixed(1), n2: v => v.toFixed(2)
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- theme ---------- */
+const root = document.documentElement;
+function setTheme(t){ root.dataset.theme = t; $("#theme").textContent = t === "dark" ? "☀ Light" : "☾ Dark";
+  try{ localStorage.setItem("theme", t) }catch(e){} drawAll(); }
+$("#theme").onclick = () => setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+try{ const s = localStorage.getItem("theme"); if (s) root.dataset.theme = s; }catch(e){}
+
+/* ---------- cards + filters ---------- */
+const STATUS = {progress:"In Progress", planned:"Planned", done:"Completed"};
+const cats = ["All", ...new Set(PROJECTS.flatMap(p => p.cats))];
+$("#chips").innerHTML = cats.map((c,i) => `<button class="chip" aria-pressed="${i===0}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
+$("#grid").innerHTML = PROJECTS.map(p => `
+  <article class="card" data-cats="${esc(p.cats.join("|"))}">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span class="num">${esc(p.n)}</span>
+      <span class="badge ${p.status}">${STATUS[p.status]}</span></div>
+    <h3>${esc(p.title)}</h3>
+    <div class="stage">${esc(p.stage)}</div>
+    <p>${esc(p.problem)}</p>
+    <div class="finding">${p.finding}</div>
+    <div class="meta">Data: ${esc(p.data)}</div>
+    <div class="tags">${p.tools.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
+    <div class="links">${p.dash ? `<a class="btn primary" href="#dashboards" data-open="${p.dash}">View results</a>` : ""}
+      <a class="btn" href="${esc(p.code || "#")}" ${p.code ? 'target="_blank" rel="noopener"' : 'aria-disabled="true" title="GitHub link coming soon"'}>Code ↗</a></div>
+  </article>`).join("");
+$("#chips").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b));
+  document.querySelectorAll(".card").forEach(card => card.classList.toggle("hide",
+    b.dataset.c !== "All" && !card.dataset.cats.split("|").includes(b.dataset.c)));
+});
+document.addEventListener("click", e => { const a = e.target.closest("[data-open]"); if (a) openTab(a.dataset.open); });
+
+/* ---------- tabs ---------- */
+function openTab(p){
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t.dataset.p === p));
+  document.querySelectorAll(".panel").forEach(x => x.classList.toggle("on", x.id === "p-"+p));
+  drawAll();
+}
+$("#tabs").addEventListener("click", e => { const t = e.target.closest(".tab"); if (t) openTab(t.dataset.p); });
+$("#tabs").addEventListener("keydown", e => {
+  if (!["ArrowRight","ArrowLeft"].includes(e.key)) return;
+  const tabs = [...document.querySelectorAll(".tab")], i = tabs.findIndex(t => t.getAttribute("aria-selected")==="true");
+  const n = tabs[(i + (e.key==="ArrowRight"?1:-1) + tabs.length) % tabs.length]; n.focus(); openTab(n.dataset.p);
+});
+
+/* ---------- tooltip ---------- */
+const tip = $("#tip");
+function showTip(html, ev){ tip.innerHTML = html; tip.style.opacity = 1;
+  const x = Math.min(ev.pageX + 12, window.scrollX + innerWidth - tip.offsetWidth - 8); tip.style.left = x+"px"; tip.style.top = (ev.pageY - 36)+"px"; }
+const hideTip = () => tip.style.opacity = 0;
+function bindTips(el){ el.querySelectorAll("[data-tip]").forEach(n => {
+  n.addEventListener("mousemove", ev => showTip(n.dataset.tip, ev)); n.addEventListener("mouseleave", hideTip); }); }
+
+/* ---------- charts (plain SVG, no libraries) ---------- */
+function hbar(id, rows, {f = fmt.int, color = "--s1", w = 520} = {}){
+  const el = document.getElementById(id); if (!el || !el.offsetParent) return;
+  const lab = 150, bh = 22, gap = 12, h = rows.length*(bh+gap), max = Math.max(...rows.map(r => r.v)) || 1, inner = w - lab - 70;
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(rows.map(r => r.l+": "+f(r.v)).join(", "))}">` +
+    rows.map((r,i) => { const y = i*(bh+gap), bw = Math.max(2, r.v/max*inner);
+      return `<g data-tip="${esc(r.l)}: <b>${esc(f(r.v))}</b>${r.t ? " · "+esc(r.t) : ""}">
+        <rect x="0" y="${y-4}" width="${w}" height="${bh+8}" fill="transparent"/>
+        <text x="0" y="${y+bh/2+4}">${esc(r.l)}</text>
+        <rect x="${lab}" y="${y}" width="${bw}" height="${bh}" rx="4" fill="${css(r.c || color)}"/>
+        <text class="val" x="${lab+bw+6}" y="${y+bh/2+4}">${esc(f(r.v))}</text></g>`; }).join("") + `</svg>`;
+  bindTips(el);
+}
+function col(id, rows, {f = fmt.int, color = "--s1", w = 520, h = 230} = {}){
+  const el = document.getElementById(id); if (!el || !el.offsetParent) return;
+  const pad = {l:8, b:40, t:22}, n = rows.length, slot = (w - pad.l)/n, bw = Math.min(56, slot*.62), max = Math.max(...rows.map(r => r.v)) || 1, ih = h - pad.b - pad.t;
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(rows.map(r => r.l+": "+f(r.v)).join(", "))}">
+    <line class="grid" x1="0" x2="${w}" y1="${h-pad.b}" y2="${h-pad.b}"/>` +
+    rows.map((r,i) => { const bh = Math.max(2, r.v/max*ih), x = pad.l + i*slot + (slot-bw)/2, y = h - pad.b - bh;
+      return `<g data-tip="${esc(r.l)}: <b>${esc(f(r.v))}</b>${r.t ? " · "+esc(r.t) : ""}">
+        <rect x="${pad.l+i*slot}" y="0" width="${slot}" height="${h}" fill="transparent"/>
+        <path d="M${x},${h-pad.b} V${y+4} q0,-4 4,-4 h${bw-8} q4,0 4,4 V${h-pad.b} Z" fill="${css(r.c || color)}"/>
+        <text class="val" x="${x+bw/2}" y="${y-6}" text-anchor="middle">${esc(f(r.v))}</text>
+        <text class="axis" x="${x+bw/2}" y="${h-pad.b+16}" text-anchor="middle">${esc(r.l)}</text>
+        ${r.l2 ? `<text class="axis" x="${x+bw/2}" y="${h-pad.b+30}" text-anchor="middle">${esc(r.l2)}</text>` : ""}</g>`; }).join("") + `</svg>`;
+  bindTips(el);
+}
+function line(id, xs, series, {f = fmt.int, w = 1000, h = 260, yMin = null, yMax = null, every = 2} = {}){
+  const el = document.getElementById(id); if (!el || !el.offsetParent) return;
+  const pad = {l:62, r:16, t:12, b:30}, all = series.flatMap(s => s.v);
+  const nice = v => { const e = Math.pow(10, Math.floor(Math.log10(v))), m = v/e; return (m<=1?1:m<=2?2:m<=2.5?2.5:m<=5?5:10)*e; };
+  const lo = yMin ?? 0, hi = yMax ?? nice(Math.max(...all)*1.04), iw = w-pad.l-pad.r, ih = h-pad.t-pad.b;
+  const X = i => pad.l + (xs.length === 1 ? iw/2 : i/(xs.length-1)*iw), Y = v => pad.t + ih - (v-lo)/(hi-lo)*ih;
+  const ticks = [0,.25,.5,.75,1].map(k => lo + k*(hi-lo));
+  let s = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Line chart">` +
+    ticks.map(t => `<line class="grid" x1="${pad.l}" x2="${w-pad.r}" y1="${Y(t)}" y2="${Y(t)}"/><text class="axis" x="${pad.l-8}" y="${Y(t)+4}" text-anchor="end">${esc(f(t))}</text>`).join("") +
+    xs.map((x,i) => i % every ? "" : `<text class="axis" x="${X(i)}" y="${h-8}" text-anchor="middle">${esc(x)}</text>`).join("") +
+    series.map(se => `<polyline fill="none" stroke="${css(se.c)}" stroke-width="2.25" stroke-linejoin="round" points="${se.v.map((v,i) => X(i)+","+Y(v)).join(" ")}"/>`).join("") +
+    `<line id="${id}-x" class="grid" x1="0" x2="0" y1="${pad.t}" y2="${h-pad.b}" style="opacity:0;stroke:var(--muted)"/>` +
+    series.map((se,k) => `<circle id="${id}-d${k}" r="4.5" fill="${css(se.c)}" stroke="${css("--surface")}" stroke-width="2" style="opacity:0"/>`).join("") +
+    `<rect x="${pad.l}" y="0" width="${iw}" height="${h}" fill="transparent" id="${id}-hit"/></svg>`;
+  if (series.length > 1) s += `<div class="legend">${series.map(se => `<span><i style="background:${css(se.c)}"></i>${esc(se.n)}</span>`).join("")}</div>`;
+  s += `<details><summary>View as table</summary><table class="t"><tr><th>Period</th>${series.map(se => `<th class="r">${esc(se.n)}</th>`).join("")}</tr>${xs.map((x,i) => `<tr><td>${esc(x)}</td>${series.map(se => `<td class="r">${esc(f(se.v[i]))}</td>`).join("")}</tr>`).join("")}</table></details>`;
+  el.innerHTML = s;
+  const svg = el.querySelector("svg"), hit = el.querySelector(`#${id}-hit`), xl = el.querySelector(`#${id}-x`);
+  hit.addEventListener("mousemove", ev => {
+    const p = svg.createSVGPoint(); p.x = ev.clientX; p.y = ev.clientY; const q = p.matrixTransform(svg.getScreenCTM().inverse());
+    const i = Math.max(0, Math.min(xs.length-1, Math.round((q.x-pad.l)/iw*(xs.length-1))));
+    xl.setAttribute("x1", X(i)); xl.setAttribute("x2", X(i)); xl.style.opacity = 1;
+    series.forEach((se,k) => { const d = el.querySelector(`#${id}-d${k}`); d.setAttribute("cx", X(i)); d.setAttribute("cy", Y(se.v[i])); d.style.opacity = 1; });
+    showTip(`<b>${esc(xs[i])}</b><br>` + series.map(se => `${esc(se.n)}: <b>${esc(f(se.v[i]))}</b>`).join("<br>"), ev);
+  });
+  hit.addEventListener("mouseleave", () => { hideTip(); xl.style.opacity = 0; el.querySelectorAll("circle").forEach(c => c.style.opacity = 0); });
+}
+const kpis = (id, items) => { $(id).innerHTML = items.map(([l,v,s]) => `<div class="kpi"><div class="l">${esc(l)}</div><div class="v">${esc(v)}</div>${s ? `<div class="s">${s}</div>` : ""}</div>`).join(""); };
+const ins = (id, items) => { $(id).innerHTML = items.map(i => `<li>${i}</li>`).join(""); };
+const mlab = m => { const [y,mo] = m.split("-"); return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+mo-1]+" "+y.slice(2); };
+
+/* ---------- panels ---------- */
+const METHOD_C = {"Credit card":"--s1","Boleto (bank slip)":"--s2","Voucher":"--s3","Debit card":"--s4"};
+function drawPay(){
+  const p = D.pay;
+  kpis("#pay-kpis", [["Payment transactions", fmt.int(p.totals.txns)], ["Payment value", fmt.brl(p.totals.value)],
+    ["Average ticket", fmt.brl2(p.totals.avg_ticket)], ["Orders paid with 2+ methods", fmt.pct(p.split_payment_share)],
+    ["Card txns on instalments", fmt.pct(p.cc_multi_installment_share)]]);
+  hbar("c-mix", p.mix.map(r => ({l:r.method, v:r.value_share, c:METHOD_C[r.method], t:fmt.int(r.txns)+" txns"})), {f:fmt.pct});
+  col("c-lag", p.approval_lag_hours.map(r => ({l:r.method.replace(" (bank slip)",""), v:r.median, c:METHOD_C[r.method],
+    t:"90th pct "+fmt.h(r.p90)+" · "+fmt.pct(r.over_24h)+" over 24h"})), {f:fmt.h});
+  line("c-pmonth", p.monthly.months.map(mlab), Object.keys(METHOD_C).filter(k => p.monthly.series[k]).map(k => ({n:k, v:p.monthly.series[k], c:METHOD_C[k]})), {f:fmt.brl});
+  col("c-inst", p.installments.map(r => ({l:r.band, v:r.share})), {f:fmt.pct});
+  col("c-instt", p.installments.map(r => ({l:r.band, v:r.avg_ticket})), {f:v => "R$"+Math.round(v), color:"--s3"});
+  const bo = p.approval_lag_hours.find(r => r.method.startsWith("Boleto")), cc = p.approval_lag_hours.find(r => r.method === "Credit card"), vo = p.failure.find(r => r.method === "Voucher");
+  ins("#pay-ins", [
+    `<b>Boleto approval is the slowest step in cash collection:</b> median ${fmt.h(bo.median)} vs ${fmt.h(cc.median)} for cards, and ${fmt.pct(bo.over_24h)} of boleto orders wait over 24h. Reminder nudges or a PIX/UPI-style instant option would speed up fulfilment.`,
+    `<b>Instalments drive basket size:</b> 7–10-instalment payments average ${fmt.brl2(p.installments[3].avg_ticket)}, about 3.5× single-payment tickets. Offering EMI on high-value categories matters.`,
+    `<b>Voucher-led orders fail more:</b> ${fmt.pct(vo.rate)} are cancelled or unavailable, vs about 1.2% for cards and boleto. Worth checking voucher abuse and stock rules.`,
+    `<b>Concentration risk:</b> ${fmt.pct(p.mix[0].value_share)} of value depends on card rails, so a card-gateway outage would hit most of revenue.`]);
+}
+const REC_C = {MISSING_IN_SETTLEMENT:"--s2", NOT_IN_LEDGER:"--s4", DUPLICATE:"--s1", AMOUNT_MISMATCH:"--s3", FEE_MISMATCH:"--s1", LATE_SETTLEMENT:"--s4"};
+const recLab = s => s.split("_").map(w => w[0]+w.slice(1).toLowerCase()).join(" ").replace("In ","in ");
+function drawRec(){
+  const r = D.rec, ex = r.summary.filter(s => s.status !== "MATCHED");
+  const expo = ex.reduce((a,s) => a + s.exposure_brl, 0), nex = ex.reduce((a,s) => a + s.transactions, 0);
+  kpis("#rec-kpis", [["Ledger transactions", fmt.int(r.ledger_rows)], ["Settlement rows", fmt.int(r.settlement_rows)],
+    ["Auto-matched", fmt.pct(r.match_rate)], ["Exceptions to work", fmt.int(nex)], ["Money at risk", fmt.brl2(expo)],
+    ["Engine test", `${r.test.correct}/${r.test.planted}`, `<span class="pill">✓ every planted error caught</span>`]]);
+  hbar("c-exc", ex.map(s => ({l:recLab(s.status), v:s.transactions, c:"--s2", t:s.action})), {});
+  hbar("c-expo", ex.map(s => ({l:recLab(s.status), v:s.exposure_brl, c:"--s1"})), {f:fmt.brl2});
+  const wk = r.weekly, tot = wk.weeks.map((_,i) => Object.values(wk.series).reduce((a,s) => a + s[i], 0));
+  line("c-wk", wk.weeks, [{n:"Exceptions", v:tot, c:"--s2"}], {every:1, w:1000, h:220});
+  $("#t-top").innerHTML = `<table class="t"><tr><th>Txn ref</th><th>Method</th><th>Status</th><th class="r">Exposure</th></tr>` +
+    r.top_exceptions.map(t => `<tr><td>${esc(t.txn_ref)}</td><td>${esc(t.method.replace("_"," "))}</td><td>${esc(recLab(t.status))}</td><td class="r">${fmt.brl2(t.exposure)}</td></tr>`).join("") + `</table>`;
+  const miss = r.summary.find(s => s.status === "MISSING_IN_SETTLEMENT");
+  ins("#rec-ins", [
+    `<b>How it works:</b> a full outer join on the transaction reference sorts every row into one of 7 statuses, calculates the expected fee from the contract rate table, and calculates money at risk.`,
+    `<b>Missing settlements are the biggest risk:</b> ${fmt.int(miss.transactions)} transactions worth ${fmt.brl2(miss.exposure_brl)} were never paid out. These go to the gateway first.`,
+    `<b>Tested, not assumed:</b> errors were planted in the <span class="sim">simulated</span> settlement file on purpose. The engine found ${r.test.correct} of ${r.test.planted}, put each in the right category, and raised 0 false alarms.`,
+    `<b>Why it matters:</b> VLOOKUP-based recon silently misses duplicates (it returns only the first match) and almost never checks fees. This engine checks both on every row.`]);
+}
+function drawOps(){
+  const o = D.ops, k = o.kpis;
+  kpis("#ops-kpis", [["Orders", fmt.int(k.orders)], ["On-time delivery", fmt.pct(k.on_time_rate)], ["Avg delivery time", fmt.n1(k.avg_delivery_days)+" days", "median "+fmt.n1(k.median_delivery_days)],
+    ["Seller dispatch SLA met", fmt.pct(k.dispatch_sla_rate)], ["Cancellation rate", fmt.pct(k.cancel_rate)], ["CSAT (1–5)", fmt.n2(k.csat), fmt.pct(k.bad_review_rate)+" bad reviews"]]);
+  line("c-ontime", o.monthly.months.map(mlab), [{n:"On-time rate", v:o.monthly.on_time, c:"--s1"}, {n:"Seller dispatch SLA", v:o.monthly.dispatch, c:"--s3"}], {f:fmt.pct, yMin:.6, yMax:1});
+  col("c-delay", o.delay_vs_csat.map(r => { const [a,...b] = r.delay_band.split(" "); return {l:a, l2:b.join(" "), v:r.csat, c: r.delay_band.includes("late") ? "--s2" : "--s1", t:fmt.int(r.orders)+" orders · "+fmt.pct(r.bad)+" bad reviews"}; }), {f:fmt.n2, h:250});
+  hbar("c-states", o.states.slice(0,8).map(s => ({l:s.state, v:s.on_time, c:"--s2", t:fmt.n1(s.days)+" days avg · CSAT "+fmt.n2(s.csat)})), {f:fmt.pct});
+  const late8 = o.delay_vs_csat.at(-1), early = o.delay_vs_csat[0], feb = o.monthly.months.indexOf("2018-03");
+  ins("#ops-ins", [
+    `<b>Delivery timing is the strongest driver of reviews:</b> CSAT falls from ${fmt.n2(early.csat)} (early) to ${fmt.n2(late8.csat)} when 8+ days late, and ${fmt.pct(late8.bad)} of those customers leave a bad review.`,
+    `<b>A visible operational incident:</b> in Mar 2018 on-time delivery fell to ${fmt.pct(o.monthly.on_time[feb])} while sellers still met their dispatch SLA ${fmt.pct(o.monthly.dispatch[feb])} of the time, so the delay happened after hand-off to the carrier. (In Nov 2017, the Black Friday peak, both dipped together.)`,
+    `<b>Regional gap:</b> the north-east states (e.g. ${o.states.slice(0,3).map(s => s.state).join(", ")}) run well below the national rate with 20+ day deliveries. Promised dates there should be set more conservatively.`]);
+}
+function drawSql(){
+  $("#sql-wrap").innerHTML = D.sql.map(q => `<div class="chart"><h3>${esc(q.title)}</h3><div class="sub">${esc(q.why)}</div>
+    <div style="overflow-x:auto"><table class="t"><tr>${q.cols.map(c => `<th>${esc(c)}</th>`).join("")}</tr>${q.rows.map(r => `<tr>${r.map(v => `<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</table></div>
+    <details><summary>Show the SQL</summary><pre>${esc(q.sql)}</pre></details></div>`).join("");
+}
+function drawXl(){
+  const x = D.xl;
+  ins("#xl-ins", [
+    `<b>Furniture sells but barely profits:</b> ${fmt.pct(x.furn_margin)} margin on ${fmt.pct(x.furn_share)} of sales, vs ${fmt.pct(x.tech_margin)} for Technology.`,
+    `<b>Discounting erodes margin:</b> order lines with 9%+ discount earn ${fmt.pct(x.disc_hi)} margin vs ${fmt.pct(x.disc_lo)} at 0–2%.`,
+    `<b>About half of order lines lose money</b> (${fmt.pct(x.loss_share)}). The profit comes from a minority of lines, so pricing and shipping-cost rules deserve a review.`,
+    `<b>Cleaning made visible:</b> parsed text dates, fixed a misspelt region ("Prarie" → "Prairie") and stripped encoding artefacts, all recorded on a Cleaning Log tab.`]);
+}
+function drawAll(){ drawPay(); drawRec(); drawOps(); drawSql(); drawXl(); }
+drawAll();
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(drawAll, 150); });
+addEventListener("scroll", () => $("#totop").classList.toggle("show", scrollY > 600), {passive:true});
+$("#totop").onclick = () => scrollTo({top:0});
+</script>
+</body>
+</html>

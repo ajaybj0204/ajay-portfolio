@@ -1,26 +1,482 @@
 @import "tailwindcss";
 
+/* ───────────────────────── Design tokens ─────────────────────────
+   Light is the default (the classic look of the original portfolio).
+   Dark mode = [data-theme="dark"] on <html>.
+   Change colours here only; components use the semantic names. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #ffffff;
+  --bg-2: #fafafa;
+  --surface: #ffffff;
+  --surface-solid: #ffffff;
+  --line: #e2e2e2;
+  --line-strong: #a3a3a3;
+  --text: #111111;
+  --text-2: #555555;
+  --muted: #7a7a7a;
+  --accent: #353535;
+  --accent-ink: #ffffff;
+  --accent-2: #8a8a8a;
+  --warn: #b45309;
+  --good: #15803d;
+  --info: #0369a1;
+  --glow: rgb(0 0 0 / 0.06);
+  --shadow: 0 18px 40px -22px rgb(0 0 0 / 0.35);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #0e0e0e;
+  --bg-2: #151515;
+  --surface: #161616;
+  --surface-solid: #161616;
+  --line: #2a2a2a;
+  --line-strong: #4a4a4a;
+  --text: #f4f4f4;
+  --text-2: #b8b8b8;
+  --muted: #8c8c8c;
+  --accent: #f1f1f1;
+  --accent-ink: #111111;
+  --accent-2: #9a9a9a;
+  --warn: #fbbf24;
+  --good: #4ade80;
+  --info: #7dd3fc;
+  --glow: rgb(255 255 255 / 0.06);
+  --shadow: 0 18px 40px -22px rgb(0 0 0 / 0.9);
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-solid: var(--surface-solid);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--text);
+  --color-ink-2: var(--text-2);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-2: var(--accent-2);
+  --color-warn: var(--warn);
+  --color-good: var(--good);
+  --color-info: var(--info);
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 84px;
 }
-
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.page-bg {
+  background: var(--bg);
+}
+/* Slide-in animations start off-screen; never let them cause sideways scrolling.
+   (clip, unlike hidden, keeps position: sticky working) */
+main > section,
+main > article {
+  overflow-x: clip;
+}
+/* Faint dotted texture used behind a few panels */
+.grid-lines {
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 25%, transparent 75%);
+}
+
+@layer components {
+/* ───────── Classic card: white, round 2rem corners, grey border ───────── */
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+.lift:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+  border-color: var(--text);
+}
+
+/* Emphasis text: monochrome shimmer that slowly sweeps */
+.grad-text {
+  background: linear-gradient(100deg, var(--text) 20%, var(--accent-2) 45%, var(--text) 70%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%, 100% { background-position: 100% 0; }
+  50% { background-position: 0% 0; }
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* The classic "Get To Know More" line above section titles */
+.kicker {
+  font-weight: 600;
+  color: var(--text-2);
+}
+.prose-case p {
+  color: var(--text-2);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* Title underline that draws in when revealed */
+.title-bar {
+  display: block;
+  height: 3px;
+  width: 0;
+  margin: 1rem auto 0;
+  border-radius: 99px;
+  background: var(--text);
+  transition: width 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s;
+}
+.in .title-bar,
+html:not(.js) .title-bar {
+  width: 64px;
+}
+
+/* ───────── Nav links: underline that slides out from the centre ───────── */
+.nav-link {
+  position: relative;
+  padding: 0.35rem 0;
+  color: var(--text);
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  bottom: -2px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: left 0.3s ease, right 0.3s ease;
+}
+.nav-link:hover,
+.nav-link[aria-current="true"] {
+  color: var(--text-2);
+}
+.nav-link:hover::after,
+.nav-link[aria-current="true"]::after {
+  left: 0;
+  right: 0;
+}
+
+/* ───────── Pill buttons with a fill that sweeps in on hover ───────── */
+.btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--accent);
+  padding: 0.8rem 1.5rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: color 0.35s ease, transform 0.2s ease, box-shadow 0.35s ease;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.btn:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-outline {
+  color: var(--text);
+  background: transparent;
+}
+.btn-outline::before {
+  background: var(--accent);
+}
+.btn-outline:hover {
+  color: var(--accent-ink);
+}
+.btn-solid {
+  color: var(--accent-ink);
+  background: var(--accent);
+}
+.btn-solid::before {
+  background: var(--text-2);
+}
+.btn-solid:hover {
+  box-shadow: var(--shadow);
+}
+
+/* Round icon buttons (socials) */
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--line-strong);
+  color: var(--text);
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.icon-btn:hover {
+  transform: translateY(-4px) rotate(-8deg);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+}
+
+/* ───────── Hero ───────── */
+.hero-photo {
+  position: relative;
+  border-radius: 999px;
+}
+/* spinning dashed ring around the photo */
+.hero-photo::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: inherit;
+  border: 2px dashed var(--line-strong);
+  animation: spin 28s linear infinite;
+}
+/* soft rotating halo */
+.hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: -34px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, transparent, var(--glow), transparent 40%, var(--glow), transparent 75%);
+  filter: blur(10px);
+  animation: spin 14s linear infinite reverse;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+/* Orbiting badges around the photo */
+.orbit-chip {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Staggered entrance for hero items (runs once on load) */
+.enter {
+  opacity: 0;
+  animation: enter 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 110ms + 100ms);
+}
+@keyframes enter {
+  from { opacity: 0; transform: translateY(24px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+.enter-zoom {
+  opacity: 0;
+  animation: enter-zoom 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s forwards;
+}
+@keyframes enter-zoom {
+  from { opacity: 0; transform: scale(0.85) rotate(-6deg); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Typewriter caret */
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 3px;
+  vertical-align: -0.15em;
+  background: currentColor;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Scroll-down mouse */
+.mouse {
+  width: 26px;
+  height: 42px;
+  border: 2px solid var(--line-strong);
+  border-radius: 14px;
+  position: relative;
+}
+.mouse::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 4px;
+  height: 8px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--text);
+  animation: wheel 1.8s ease-in-out infinite;
+}
+@keyframes wheel {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(14px); }
+}
+
+/* Bouncing "next section" arrow (from the original site) */
+.next-arrow {
+  animation: nudge 2s ease-in-out infinite;
+}
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* Infinite tools ticker */
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 0.75rem;
+  animation: marquee 45s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* Scroll progress bar */
+.progress {
+  transform-origin: 0 50%;
+  transform: scaleX(var(--p, 0));
+}
+
+/* Timeline line that grows as you scroll into it */
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--text);
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 1.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.timeline.in::before,
+html:not(.js) .timeline::before {
+  transform: scaleY(1);
+}
+
+/* Project card image + 3D tilt */
+[data-tilt] {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.shine {
+  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), var(--glow), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+[data-tilt]:hover .shine {
+  opacity: 1;
+}
+
+/* ───────── Scroll reveal (content stays visible if JS is off) ───────── */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+.js [data-reveal="left"] { transform: translateX(-48px); }
+.js [data-reveal="right"] { transform: translateX(48px); }
+.js [data-reveal="zoom"] { transform: scale(0.9); }
+.js [data-reveal].in {
+  opacity: 1;
+  transform: none;
+}
+/* Stagger: children of [data-stagger] pop in one after another */
+.js [data-stagger] > * {
+  opacity: 0;
+  transform: translateY(24px) scale(0.98);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.js [data-stagger].in > * {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .enter,
+  .enter-zoom,
+  .js [data-reveal],
+  .js [data-stagger] > * {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .title-bar { width: 64px; }
+  .timeline::before { transform: none; }
 }
