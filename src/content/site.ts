@@ -19,7 +19,7 @@ export const site = {
   // From your GitHub repo owner name (ajaybj0204/...). Confirm the profile is public.
   github: "https://github.com/ajaybj0204",
   resumePdf: "/Ajay-B-J-Resume.pdf",
-  url: "https://explorexplorer.netlify.app",
+  url: "https://ajay-bj-portfolio.netlify.app",
   education: {
     degree: "BE, Information Science & Engineering",
     institution: "New Horizon College of Engineering, Bangalore",

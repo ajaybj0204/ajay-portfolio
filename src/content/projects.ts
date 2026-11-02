@@ -114,6 +114,127 @@ export const projects: Project[] = [
     ],
   },
 
+  // ───────────────────────────────────────────── AI SAAS
+  {
+    slug: "careerflow-ai",
+    title: "CareerFlow AI",
+    tagline: "AI job-search platform that tracks applications from Gmail automatically",
+    status: "live",
+    statusNote: "Live · in daily use for my own job search",
+    categories: ["Full-stack", "Business & Product"],
+    featured: true,
+    summary:
+      "A full-stack job-search SaaS for India: it reads job emails from Gmail (read-only), creates and updates applications automatically, tailors resumes truthfully with Gemini AI, and runs in the background every 15 minutes. It found 105 of my own applications from 90 days of email.",
+    role:
+      "Product owner and builder: I wrote the specification and rules (privacy, honesty, when automation may act), built it with AI-assisted development, set up Google Cloud, Supabase, Vercel and GitHub, and tested it on my own inbox.",
+    aiAssisted:
+      "Code was generated and refactored with Claude (Claude Code). I wrote the product spec, made the architecture and safety decisions, reviewed changes, and verified every feature against my real Gmail before calling it done.",
+    tools: [
+      "Next.js 15",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Supabase (Postgres, Auth, RLS)",
+      "Gmail API",
+      "Google OAuth",
+      "Gemini API",
+      "Vercel",
+      "GitHub Actions",
+      "Vitest",
+      "Chrome Extension (MV3)",
+    ],
+    cover: {
+      src: "/images/careerflow-home.webp",
+      alt: "CareerFlow AI landing page: gradient headline 'From job search to job offer, all in one place' next to a sample application pipeline",
+      width: 1286,
+      height: 666,
+    },
+    gallery: [
+      { src: "/images/careerflow-home.webp", alt: "CareerFlow AI home page", caption: "Landing page with animated gradient design. The pipeline card is a labelled sample preview.", width: 1286, height: 666 },
+      { src: "/images/careerflow-features.webp", alt: "Feature grid: Gmail tracking, tailored resumes, workspaces, interviews, strategy, privacy", caption: "The six parts of the product working around one profile and one application database", width: 1286, height: 590 },
+      { src: "/images/careerflow-login.webp", alt: "Sign-in card with Continue with Google button", caption: "Google sign-in; Gmail access is asked for separately, only if you choose to connect it", width: 1286, height: 666 },
+    ],
+    links: [{ label: "Open CareerFlow AI", href: "https://careerflow-ajaybj.vercel.app", note: "Sign in with Google" }],
+    flow: {
+      title: "How an application gets tracked without me typing anything",
+      layers: [
+        { label: "Gmail (read-only)", items: ["Confirmation emails", "Recruiter replies", "Assessments & interviews", "Offers & rejections"] },
+        { label: "Background jobs", items: ["GitHub Actions every 15 min", "Gmail History API sync", "Job queue with retries & backoff", "Time-budgeted for serverless"] },
+        { label: "Classify & match", items: ["Rules for LinkedIn, Indeed, ATS formats", "Gemini only with consent", "Match to existing application", "Unclear → Needs Review"] },
+        { label: "Your pipeline", items: ["Applications & statuses", "Timeline & reminders", "Tailored resumes & prep", "Analytics & strategy"] },
+      ],
+    },
+    sections: [
+      {
+        heading: "The problem",
+        body:
+          "When you apply to dozens of jobs across LinkedIn, Indeed, Naukri and company career sites, tracking breaks down fast. Confirmations, assessment links, interview invites and rejections land in Gmail, and a spreadsheet goes out of date within a week.\n\nI wanted one place where every application is tracked automatically from the emails I already receive, and where AI help (resumes, cover letters, interview prep) never invents experience I don't have.",
+      },
+      {
+        heading: "What I built",
+        bullets: [
+          "Google sign-in with every user's data isolated by Postgres row-level security across 60 tables",
+          "Gmail connection with read-only access; Google tokens stored encrypted (AES-256-GCM)",
+          "Historical import of the last 90 days, then incremental sync every 15–30 minutes, with no browser open",
+          "Email classifier for LinkedIn, Indeed, Keka, SmartRecruiters, iCIMS and generic confirmations, interviews, assessments, offers and rejections",
+          "Safe automation: high-impact changes (rejection, offer) need strong evidence; anything unclear goes to a Needs Review queue",
+          "Resume tailoring and cover letters with Gemini, checked so AI rewording can't add skills, numbers or employers",
+          "Per-job workspace, interview prep, calendar, follow-up reminders and response-rate analytics",
+          "A Chrome extension (Manifest V3) to save a job posting in one click and avoid duplicates",
+          "Animated gradient UI with its own logo, light and dark themes, breadcrumbs and keyboard search",
+        ],
+      },
+      {
+        heading: "Tech stack",
+        bullets: [
+          "Frontend: Next.js 15 (App Router, server actions), React, TypeScript, Tailwind CSS v4",
+          "Database & auth: Supabase Postgres with row-level security, Supabase Auth (Google), Supabase Storage; postgres.js in production, PGlite for local runs and tests",
+          "Google: Gmail API (OAuth, History API, read-only scope), Google Cloud OAuth consent setup",
+          "AI: Google Gemini API with automatic model fallback; AI processing of emails only with the user's consent",
+          "Background work: a database job queue with leasing, retries and backoff, driven by GitHub Actions (every 15 min) and Vercel Cron (daily backup)",
+          "Hosting & CI: Vercel (Mumbai region), GitHub, GitHub Actions for CI and scheduling",
+          "Quality: Vitest with 57 automated tests, Zod validation, TypeScript type-checking",
+          "Monorepo: npm workspaces (web app, worker, Chrome extension, shared packages)",
+        ],
+      },
+      {
+        heading: "Rules I set for the product",
+        bullets: [
+          "Never show fake data: if something isn't connected, the app says so",
+          "Gmail is read-only; the app never sends, deletes or labels email",
+          "A status you set by hand is never overwritten by automation without asking",
+          "Secrets and API keys never reach the browser; tokens are encrypted at rest",
+          "The extension never submits applications; it only saves jobs and copies approved answers",
+        ],
+      },
+      {
+        heading: "Problems I hit in production and fixed",
+        bullets: [
+          "Serverless time limits: the 90-day import timed out, so I split it into small pages with a time-budgeted job runner",
+          "Gmail API rate limits: added pauses and smaller batches",
+          "Data stored twice-encoded as JSON on real Postgres (not seen in local tests): fixed the driver setting and wrote a repair migration",
+          "A Gemini model was retired: added automatic fallback to newer models",
+          "LinkedIn changed its email layout, so applications landed in review: rewrote the parser against the real format and re-processed the queue (38 → 105 applications)",
+          "Sign-in redirect and OAuth callback mismatches between Supabase, Google Cloud and Vercel",
+        ],
+      },
+      {
+        heading: "Where it stands, honestly",
+        body:
+          "CareerFlow AI is live and I use it every day for my own job search. Verified live: Google sign-in, Gmail connection and import, background sync, and Gemini AI. Not yet verified live: Gmail push notifications (polling is used instead), live job-board feeds, and the Chrome extension in a real browser. It's a single-user product today, not a launched SaaS with customers.",
+      },
+      {
+        heading: "What I learned",
+        bullets: [
+          "Real data breaks things tests don't: my own inbox found the bugs that mattered",
+          "Automation needs a safety valve: a review queue made it trustworthy enough to leave running",
+          "Most of the work in an integration is setup: OAuth consent, redirect URLs, secrets and quotas",
+          "Writing the rules first (privacy, honesty, what automation may change) kept an AI coding assistant on track",
+        ],
+      },
+    ],
+  },
+
   // ───────────────────────────────────────────── DATA (links to the data lab)
   {
     slug: "payment-reconciliation",

@@ -38,6 +38,12 @@ export const journey: JourneyItem[] = [
     kind: "learning",
   },
   {
+    when: "Nov 2026",
+    title: "CareerFlow AI",
+    body: "AI job-search platform that reads my Gmail (read-only) and tracks every application automatically. Live on Vercel with Supabase, Gmail API, Gemini and background jobs.",
+    kind: "build",
+  },
+  {
     when: "Next",
     title: "Finishing what's in progress",
     body: "Build the Power BI report, rebuild the reconciliation logic myself, and deepen SQL for analyst roles.",
