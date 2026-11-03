@@ -235,6 +235,77 @@ export const projects: Project[] = [
     ],
   },
 
+  // ───────────────────────────────────────────── CONSUMER APP
+  {
+    slug: "fitora",
+    title: "FITORA",
+    tagline: "Fitness & wellness app with an 873-exercise photo library, in 5 languages",
+    status: "live",
+    statusNote: "Live · front-end app, data stays in your browser",
+    categories: ["Business & Product"],
+    featured: true,
+    summary:
+      "A fitness and wellness web app for Indian users: weekly workout plans, a searchable library of 873 exercises with real start-to-finish demo photos, BMI/BMR and macro targets, Indian meal guidance, water and progress tracking, in English, Kannada, Telugu, Tamil and Malayalam.",
+    role:
+      "Product owner and builder: I decided the features, the look and the rules (honest health numbers, free-to-use media only), built it with AI-assisted development, and tested every screen on desktop and mobile before shipping.",
+    aiAssisted:
+      "Code was generated and refactored with Claude (Claude Code). I chose the features and data sources, checked image licences, reviewed changes and tested the live site myself.",
+    tools: ["React 19", "TypeScript", "Vite", "Tailwind CSS v4", "Motion", "PWA (installable)", "Vercel", "GitHub"],
+    cover: {
+      src: "/images/fitora-library.webp",
+      alt: "FITORA exercise library: cards for Pushups, Barbell Squat, Barbell Bench Press and more, each with a real demo photo",
+      width: 1286,
+      height: 720,
+    },
+    gallery: [
+      { src: "/images/fitora-library.webp", alt: "FITORA exercise library grid", caption: "Exercise library: 873 exercises with photos, filters by body part, muscle, equipment and level", width: 1286, height: 720 },
+      { src: "/images/fitora-demo.webp", alt: "Pushups detail page with the demo player showing the end position and a rep counter", caption: "Demo player: start and end photos loop like a slow animation, with a rep counter and step-by-step instructions", width: 1286, height: 720 },
+      { src: "/images/fitora-workout.webp", alt: "Weekly workout plan with a Push day and exercise cards", caption: "Weekly plan: every exercise in the plan uses the same real demo photos", width: 1286, height: 720 },
+    ],
+    links: [
+      { label: "Open FITORA", href: "https://fit-mate-coral.vercel.app", note: "No sign-up needed" },
+      { label: "Code on GitHub", href: "https://github.com/ajaybj0204/FitMate" },
+    ],
+    sections: [
+      {
+        heading: "The problem",
+        body:
+          "Most fitness apps are built for Western diets and English speakers, and many show exercises as cartoons that don't really teach the movement. I wanted one place to plan workouts, see exactly how each exercise is done, and get diet guidance that fits Indian food, in my own language.",
+      },
+      {
+        heading: "What I built",
+        bullets: [
+          "Exercise library of 873 exercises, each with real start and end position photos that loop like an animation, plus a rep counter, play/pause, step and speed controls",
+          "Search and filters by body part, muscle, equipment, difficulty and type, with favourites and 'Add to workout'",
+          "Weekly workout plans (push, pull, legs, cardio) with an active-workout mode that tracks sets and reps",
+          "Health numbers from standard formulas: BMI, BMR (Mifflin-St Jeor), calorie, protein, macro and water targets",
+          "Nutrition guidance with Indian meals and a budget grocery list",
+          "A built-in assistant that answers common questions from your own numbers (rule-based, not a live AI model)",
+          "Five languages: English, Kannada, Telugu, Tamil and Malayalam",
+          "Installable as an app (PWA), with an offline indicator, light and dark themes and a mobile layout",
+        ],
+      },
+      {
+        heading: "Replacing the cartoon animations",
+        body:
+          "The first version drew exercises as animated cartoon figures, and they didn't look right. I found a popular exercise GIF dataset, but its licence doesn't allow reuse of the media, so I didn't use it. Instead I switched to Free Exercise DB, which is public domain: 873 exercises with real photos and written instructions.\n\nThe photos load on demand from a CDN, the 850 KB exercise list is only downloaded when you open the library, and the old plan exercises were matched to their library versions so saved plans still work.",
+      },
+      {
+        heading: "Where it stands, honestly",
+        body:
+          "FITORA is a front-end app: your profile and progress are saved in your own browser, there are no accounts and no server. The assistant uses fixed rules, not an AI model. It has no users beyond me today. Next steps would be sign-in with cloud sync and a real AI coach.",
+      },
+      {
+        heading: "What I learned",
+        bullets: [
+          "Check media licences before building around a dataset; 'on GitHub' doesn't mean free to use",
+          "Load big data only when it's needed, so the first page stays fast",
+          "Supporting five languages means designing the layout for longer words from the start",
+        ],
+      },
+    ],
+  },
+
   // ───────────────────────────────────────────── DATA (links to the data lab)
   {
     slug: "payment-reconciliation",

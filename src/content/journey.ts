@@ -44,6 +44,12 @@ export const journey: JourneyItem[] = [
     kind: "build",
   },
   {
+    when: "Nov 2026",
+    title: "FITORA",
+    body: "Fitness and wellness app in 5 languages. Replaced cartoon exercise animations with a public-domain library of 873 exercises and real demo photos.",
+    kind: "build",
+  },
+  {
     when: "Next",
     title: "Finishing what's in progress",
     body: "Build the Power BI report, rebuild the reconciliation logic myself, and deepen SQL for analyst roles.",
