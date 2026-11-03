@@ -417,8 +417,13 @@ html:not(.js) .timeline::before {
 }
 
 /* Project card image + 3D tilt */
+/* The frame only provides perspective. It is flat (no preserve-3d) and ignores the pointer,
+   so a tilted card can never end up "behind" it and swallow clicks meant for the link. */
 [data-tilt] {
-  transform-style: preserve-3d;
+  pointer-events: none;
+}
+[data-tilt] > * {
+  pointer-events: auto;
   will-change: transform;
 }
 .shine {
