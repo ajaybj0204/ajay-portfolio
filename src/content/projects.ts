@@ -239,18 +239,31 @@ export const projects: Project[] = [
   {
     slug: "fitora",
     title: "FITORA",
-    tagline: "Fitness & wellness app with an 873-exercise photo library, in 5 languages",
+    tagline: "Full-stack fitness app: smart workout logger, AI coach, gym management and an Android app",
     status: "live",
-    statusNote: "Live · front-end app, data stays in your browser",
-    categories: ["Business & Product"],
+    statusNote: "Live · web + Android app (installed, not yet on Play Store)",
+    categories: ["Full-stack", "Business & Product"],
     featured: true,
     summary:
-      "A fitness and wellness web app for Indian users: weekly workout plans, a searchable library of 873 exercises with real start-to-finish demo photos, BMI/BMR and macro targets, Indian meal guidance, water and progress tracking, in English, Kannada, Telugu, Tamil and Malayalam.",
+      "A fitness app for Indian gym-goers and gym owners. It remembers every set you log and tells you what to lift next time, swaps exercises when equipment is busy, and has an AI coach and food logging that understand Indian meals. Gym owners get members, fees, WhatsApp/UPI reminders, QR check-in and monthly reports. Google sign-in, cloud sync, phone reminders and 5 languages.",
     role:
-      "Product owner and builder: I decided the features, the look and the rules (honest health numbers, free-to-use media only), built it with AI-assisted development, and tested every screen on desktop and mobile before shipping.",
+      "Product owner and builder: I researched what makes people quit gyms, chose the features and the rules (no fake numbers, free-to-use media, privacy by default), set up Firebase, Vercel, Gemini and the Android package, and tested every flow live with my own account and phone.",
     aiAssisted:
-      "Code was generated and refactored with Claude (Claude Code). I chose the features and data sources, checked image licences, reviewed changes and tested the live site myself.",
-    tools: ["React 19", "TypeScript", "Vite", "Tailwind CSS v4", "Motion", "PWA (installable)", "Vercel", "GitHub"],
+      "Code was generated and refactored with Claude (Claude Code). I decided what to build and why, set up the cloud accounts and keys, reviewed changes, and tested features end to end on the live site and my Android phone.",
+    tools: [
+      "React 19",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS v4",
+      "Firebase Auth (Google)",
+      "Cloud Firestore + security rules",
+      "Firebase Cloud Messaging",
+      "Gemini API",
+      "Vercel serverless functions",
+      "GitHub Actions",
+      "PWA + Android (TWA)",
+      "UPI deep links",
+    ],
     cover: {
       src: "/images/fitora-library.webp",
       alt: "FITORA exercise library: cards for Pushups, Barbell Squat, Barbell Bench Press and more, each with a real demo photo",
@@ -258,31 +271,51 @@ export const projects: Project[] = [
       height: 720,
     },
     gallery: [
-      { src: "/images/fitora-library.webp", alt: "FITORA exercise library grid", caption: "Exercise library: 873 exercises with photos, filters by body part, muscle, equipment and level", width: 1286, height: 720 },
-      { src: "/images/fitora-demo.webp", alt: "Pushups detail page with the demo player showing the end position and a rep counter", caption: "Demo player: start and end photos loop like a slow animation, with a rep counter and step-by-step instructions", width: 1286, height: 720 },
-      { src: "/images/fitora-workout.webp", alt: "Weekly workout plan with a Push day and exercise cards", caption: "Weekly plan: every exercise in the plan uses the same real demo photos", width: 1286, height: 720 },
+      { src: "/images/fitora-tracker.webp", alt: "Workout tracker showing last time, today's target, warm-up sets, plates per side and the set tracker", caption: "Smart logger: last session, today's target, warm-up ramp and plates to load, then log each set", width: 1286, height: 720 },
+      { src: "/images/fitora-plan-builder.webp", alt: "Build my weekly plan dialog with days per week, gym or home, goal and experience, and a 4-day upper/lower plan preview", caption: "Plan builder: a weekly split from days per week, gym or home, goal and experience", width: 1286, height: 720 },
+      { src: "/images/fitora-library.webp", alt: "FITORA exercise library grid", caption: "Exercise library: 873 exercises with real photos, used everywhere in the app", width: 1286, height: 720 },
+      { src: "/images/fitora-demo.webp", alt: "Pushups detail page with the demo player showing the end position and a rep counter", caption: "Demo player: start and end photos loop like a slow animation, with a rep counter", width: 1286, height: 720 },
     ],
     links: [
-      { label: "Open FITORA", href: "https://fit-mate-coral.vercel.app", note: "No sign-up needed" },
+      { label: "Open FITORA", href: "https://fit-mate-coral.vercel.app", note: "Try as a guest or sign in with Google" },
       { label: "Code on GitHub", href: "https://github.com/ajaybj0204/FitMate" },
     ],
+    flow: {
+      title: "How FITORA fits together",
+      layers: [
+        { label: "Apps", items: ["Website (React + Vite)", "Android app (TWA)", "Works offline in the gym", "5 languages"] },
+        { label: "Firebase", items: ["Google sign-in", "Firestore + security rules", "Offline cache & sync", "Push notifications (FCM)"] },
+        { label: "Serverless (Vercel)", items: ["AI coach & food estimates (Gemini)", "Hourly reminder job", "Key stays on the server", "Per-user rate limit"] },
+        { label: "For gyms", items: ["Members & fee due dates", "WhatsApp + UPI pay links", "QR check-in", "Monthly reports & CSV"] },
+      ],
+    },
     sections: [
       {
         heading: "The problem",
         body:
-          "Most fitness apps are built for Western diets and English speakers, and many show exercises as cartoons that don't really teach the movement. I wanted one place to plan workouts, see exactly how each exercise is done, and get diet guidance that fits Indian food, in my own language.",
+          "Most people who join a gym stop going within months. The common reasons are not knowing what to do, seeing no progress, and plans that break on a busy day. Gym owners, meanwhile, track fees in registers and WhatsApp and find out someone quit only when the fee doesn't come.\n\nMost fitness apps are also built for Western diets and English speakers. I wanted FITORA to solve the everyday problems for both sides, for Indian users, in their own language.",
       },
       {
         heading: "What I built",
         bullets: [
-          "Exercise library of 873 exercises, each with real start and end position photos that loop like an animation, plus a rep counter, play/pause, step and speed controls",
-          "Search and filters by body part, muscle, equipment, difficulty and type, with favourites and 'Add to workout'",
-          "Weekly workout plans (push, pull, legs, cardio) with an active-workout mode that tracks sets and reps",
-          "Health numbers from standard formulas: BMI, BMR (Mifflin-St Jeor), calorie, protein, macro and water targets",
-          "Nutrition guidance with Indian meals and a budget grocery list",
-          "A built-in assistant that answers common questions from your own numbers (rule-based, not a live AI model)",
-          "Five languages: English, Kannada, Telugu, Tamil and Malayalam",
-          "Installable as an app (PWA), with an offline indicator, light and dark themes and a mobile layout",
+          "Smart workout logger: remembers every set and suggests next time's weight and reps (double progression, with an automatic step back after two hard sessions)",
+          "In-gym helpers: 'equipment busy?' swaps from the 873-exercise library, warm-up sets, plates per side, and a rest timer with sound and vibration",
+          "Plan builder: a weekly split from days per week, gym or home, goal and experience; missed days can be done today, done as a 30-minute version, or skipped",
+          "AI coach (Gemini) that reads your real logged workouts, food and targets; AI food logging that understands Indian meals and portions",
+          "Real progress only: strength charts, workouts per week, body check-ins and badges, all from what you log, with no sample data",
+          "Google sign-in with cloud sync and offline support; phone reminders for workouts, water and gym fees, sent by an hourly server job",
+          "Gym owner side: members, plans, payments, fees due/overdue, 'at risk' members, WhatsApp reminders with UPI pay links, reception QR check-in, monthly reports",
+          "Installable Android app (Trusted Web Activity) verified with Digital Asset Links; English, Kannada, Telugu, Tamil and Malayalam",
+        ],
+      },
+      {
+        heading: "Decisions I made",
+        bullets: [
+          "Firebase instead of Supabase: my Supabase free slots were used, and Firestore's offline cache suits basement gyms with no signal",
+          "Security rules first: each person sees only their own data; members can see their own membership but never other members or payments",
+          "The AI key never reaches the browser: a serverless function checks the user's login and limits requests per hour",
+          "UPI links instead of a payment gateway: money goes straight to the gym owner with no fees; FITORA only records payments",
+          "Fastest working model: the newest Gemini model took over 2 minutes on the free tier, so the coach uses a 'lite' model that answers in about 2 seconds",
         ],
       },
       {
@@ -293,14 +326,16 @@ export const projects: Project[] = [
       {
         heading: "Where it stands, honestly",
         body:
-          "FITORA is a front-end app: your profile and progress are saved in your own browser, there are no accounts and no server. The assistant uses fixed rules, not an AI model. It has no users beyond me today. Next steps would be sign-in with cloud sync and a real AI coach.",
+          "FITORA is live and I use it myself; the Android app is installed on my phone but not yet on the Play Store. Tested live: Google sign-in, cloud sync, the smart logger, AI coach and food logging, phone notifications, and the gym owner tools. Not yet tested with real users: the member side of a gym (invite link and QR check-in need a second account), and there are no gyms or customers using it yet. The gym owner screens and AI answers are still in English, and the regional-language text needs review by native speakers.",
       },
       {
         heading: "What I learned",
         bullets: [
           "Check media licences before building around a dataset; 'on GitHub' doesn't mean free to use",
-          "Load big data only when it's needed, so the first page stays fast",
-          "Supporting five languages means designing the layout for longer words from the start",
+          "Sample data hurts trust: once real accounts existed, every made-up number had to go",
+          "Security rules need their own testing: a rule that allowed saving workouts but not reading them only showed up live",
+          "Free AI tiers change fast; build in model fallbacks and timeouts from the start",
+          "Real-world features (reminders, payments, an Android app) are mostly setup: keys, permissions and verification files",
         ],
       },
     ],

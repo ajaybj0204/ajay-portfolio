@@ -46,7 +46,7 @@ export const journey: JourneyItem[] = [
   {
     when: "Nov 2026",
     title: "FITORA",
-    body: "Fitness and wellness app in 5 languages. Replaced cartoon exercise animations with a public-domain library of 873 exercises and real demo photos.",
+    body: "Turned a fitness prototype into a full-stack app: Google sign-in, smart workout logger, Gemini AI coach and food logging, phone reminders, gym owner tools with UPI links, and an Android app.",
     kind: "build",
   },
   {
