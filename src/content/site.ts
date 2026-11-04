@@ -14,7 +14,7 @@ export const site = {
   location: "Bengaluru, Karnataka, India",
   availability: "Open to Business Operations, Payments Operations, Business Analyst and Data Analyst roles in Bengaluru",
   email: "ajaybj0204@gmail.com",
-  phone: "+91 76763 53149", // shown on your previous site; set to "" to hide it
+  phone: "", // hidden on purpose; put "+91 76763 53149" back to show it
   linkedin: "https://linkedin.com/in/ajay-b-j",
   // From your GitHub repo owner name (ajaybj0204/...). Confirm the profile is public.
   github: "https://github.com/ajaybj0204",
