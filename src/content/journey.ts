@@ -50,6 +50,12 @@ export const journey: JourneyItem[] = [
     kind: "build",
   },
   {
+    when: "Nov 2026",
+    title: "Ajay AutoFlow",
+    body: "Chrome extension that batch-runs Google Flow prompts for AI videos: scene import, timecoded files, pause/resume and a run report, with a companion website.",
+    kind: "build",
+  },
+  {
     when: "Next",
     title: "Finishing what's in progress",
     body: "Build the Power BI report, rebuild the reconciliation logic myself, and deepen SQL for analyst roles.",

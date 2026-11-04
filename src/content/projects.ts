@@ -341,6 +341,99 @@ export const projects: Project[] = [
     ],
   },
 
+  // ───────────────────────────────────────────── AI TOOLING
+  {
+    slug: "ajay-autoflow",
+    title: "Ajay AutoFlow",
+    tagline: "Chrome extension that batch-runs Google Flow prompts and saves every clip in order",
+    status: "live",
+    statusNote: "Free download · install from ZIP (not on the Chrome Web Store yet)",
+    categories: ["AI & Content", "Business & Product"],
+    featured: true,
+    summary:
+      "A Chrome extension for AI video creators: paste or import a whole storyboard, press Start, and it runs every scene in Google Flow, picks the right character and voice, and saves each clip with a timecoded file name. It also has pause/resume with crash recovery, a run report with retry-failed, and a companion website with a storyboard planner.",
+    role:
+      "Built it for my own AI video work: I mapped the manual routine in Flow, decided what to automate and what to leave out, designed the side panel and website, and tested each feature.",
+    aiAssisted:
+      "Code was generated and refactored with Claude (Claude Code). I defined the workflow, reviewed the changes, and tested the extension and website myself.",
+    tools: [
+      "JavaScript",
+      "Chrome Extensions (Manifest V3)",
+      "Side Panel API",
+      "Chrome DevTools Protocol",
+      "chrome.storage / downloads / notifications",
+      "HTML & CSS",
+      "Vercel",
+      "GitHub",
+    ],
+    cover: {
+      src: "/images/autoflow-landing.webp",
+      alt: "Ajay AutoFlow website: 'Paste your storyboard once. Get every scene, in order.' next to a mock of the side panel running scene 3 of 6",
+      width: 1286,
+      height: 720,
+    },
+    gallery: [
+      { src: "/images/autoflow-landing.webp", alt: "AutoFlow landing page", caption: "Website with a download button and a preview of the side panel mid-run", width: 1286, height: 720 },
+      { src: "/images/autoflow-features.webp", alt: "Feature cards: prompt queue, import from Sheets, files in order, characters and voices, pause and resume, run report", caption: "What the extension does", width: 1286, height: 720 },
+      { src: "/images/autoflow-planner.webp", alt: "Storyboard planner table with timecode, what happens, character and voice columns", caption: "Storyboard planner: plan scenes on any device, then export a CSV the extension imports", width: 1286, height: 720 },
+    ],
+    links: [
+      { label: "Open AutoFlow website", href: "https://ajay-autoflow.vercel.app", note: "Free download" },
+      { label: "Code on GitHub", href: "https://github.com/ajaybj0204/ajay-autoflow" },
+    ],
+    flow: {
+      title: "From storyboard to a folder of finished clips",
+      layers: [
+        { label: "Plan", items: ["Storyboard planner (web)", "Google Sheets / CSV", "Prompt templates", "Per-scene voice, model, ratio"] },
+        { label: "Side panel", items: ["Prompt queue", "Projects & settings", "Pause / resume", "Time-left estimate"] },
+        { label: "In the Flow tab", items: ["Types each prompt", "Picks @character + voice", "Generates & waits", "Downloads at chosen quality"] },
+        { label: "Output", items: ["Timecoded files (0-04.mp4)", "Folder per project", "Caption .txt files", "Run report + CSV shot list"] },
+      ],
+    },
+    sections: [
+      {
+        heading: "The problem",
+        body:
+          "A single AI video in Google Flow can need 30 or more scenes. Every scene was the same routine: paste the prompt, choose the character and voice, set the model and ratio, click Generate, wait, download, then rename the file to its timecode so the editor gets them in order. That's roughly 150 clicks for one video, and files easily end up mixed up.",
+      },
+      {
+        heading: "What I built",
+        bullets: [
+          "A side-panel Chrome extension that runs a queue of prompts in Flow one after another (text to video, frames to video, ingredients, text to image, image editing)",
+          "Character and voice picking by name, plus per-prompt settings lines (voice, model, ratio) at the top of a prompt",
+          "Scene import from Google Sheets or CSV, with templates like {character} {action}, cinematic",
+          "Timecoded file names (#0:04 → 0-04.mp4), a sub-folder per project and optional caption files",
+          "Pause and resume, and crash recovery that continues an interrupted batch where it stopped",
+          "A run report with time per scene, 'Retry failed only' and a CSV shot list, plus a live time-left estimate and a done notification",
+          "A self-check that shows which Flow controls it can still find after a Google update, and an English / Hinglish panel",
+          "A companion website with the download, install guide and a storyboard planner that exports straight into the extension",
+        ],
+      },
+      {
+        heading: "Decisions I made",
+        bullets: [
+          "Kept it an extension, not a web app: only an extension can act inside your own signed-in Flow tab; a server would need people's Google logins",
+          "No servers and no tracking: everything runs in the user's browser and talks only to Google Flow",
+          "Left out anything that gets around Flow's plan limits, credits or watermarks",
+          "Built to survive redesigns: controls are found by text, labels and icons, with editable selectors and a self-check",
+        ],
+      },
+      {
+        heading: "Where it stands, honestly",
+        body:
+          "AutoFlow is a free download from its website and the code is public on GitHub. It's installed by loading the unpacked folder; it isn't on the Chrome Web Store yet. Because it drives Google Flow's interface, a Flow redesign can break a step until the selectors are updated. It has no user numbers to report yet.",
+      },
+      {
+        heading: "What I learned",
+        bullets: [
+          "Automating someone else's interface means planning for change: fallbacks, logs and a self-check matter as much as the happy path",
+          "Long-running jobs need recovery: pause, resume and 'retry failed only' turned a fragile script into something I can leave running",
+          "A small website and a clear README make a tool much easier to share than a ZIP file on its own",
+        ],
+      },
+    ],
+  },
+
   // ───────────────────────────────────────────── DATA (links to the data lab)
   {
     slug: "payment-reconciliation",
