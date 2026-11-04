@@ -2,7 +2,7 @@ import type { Role } from "./types";
 
 /**
  * Work history — sourced from Ajay's current resume (Ajay_Cvv.pdf, Nov 2026).
- * Keep this in sync with public/Ajay-B-J-Resume.pdf.
+ * Keep this in sync with public/Ajay-B-J-Resume.pdf (the public copy has no phone number).
  */
 export const experience: Role[] = [
   {
