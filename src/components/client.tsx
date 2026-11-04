@@ -407,3 +407,62 @@ export function ContactForm({ formName }: { formName: string }) {
     </form>
   );
 }
+
+/**
+ * Hero reel in the round frame: plays muted on loop (browsers only autoplay muted video),
+ * with a small button to turn sound on. The photo is the poster while it loads, and stays
+ * as a still image for visitors who prefer reduced motion.
+ */
+export function HeroVideo({ src, poster, label, className = "" }: { src: string; poster: string; label: string; className?: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+  const [still, setStill] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => {
+      setStill(mq.matches);
+      const v = ref.current;
+      if (!v) return;
+      if (mq.matches) v.pause();
+      else v.play().catch(() => {});
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  const toggleSound = () => {
+    const v = ref.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setMuted(v.muted);
+    if (v.paused) v.play().catch(() => {});
+  };
+
+  return (
+    <>
+      <video
+        ref={ref}
+        className={className}
+        src={src}
+        poster={poster}
+        autoPlay={!still}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={label}
+      />
+      <button
+        type="button"
+        onClick={toggleSound}
+        aria-label={muted ? "Turn video sound on" : "Turn video sound off"}
+        aria-pressed={!muted}
+        className="glass absolute right-[12%] bottom-[8%] z-10 grid size-10 place-items-center rounded-full text-base shadow-[var(--shadow)] transition-transform hover:scale-110"
+      >
+        <span aria-hidden>{muted ? "🔇" : "🔊"}</span>
+      </button>
+    </>
+  );
+}

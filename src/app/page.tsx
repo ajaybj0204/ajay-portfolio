@@ -9,7 +9,7 @@ import type { ProjectCategory, SkillLevel } from "@/content/types";
 import { Icon } from "@/components/Icon";
 import { Button, SectionHead, StatusBadge, Tag } from "@/components/ui";
 import { ProjectCard } from "@/components/layout";
-import { ContactForm, CopyButton, ProjectFilter, Typewriter } from "@/components/client";
+import { ContactForm, CopyButton, HeroVideo, ProjectFilter, Typewriter } from "@/components/client";
 
 const W = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
   <div className={`mx-auto max-w-6xl px-5 sm:px-8 ${className}`}>{children}</div>
@@ -55,16 +55,13 @@ export default function Home() {
         </div>
 
         <W className="grid w-full items-center gap-14 py-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-          {/* Photo */}
+          {/* Reel (photo shows while it loads, or for reduced motion) */}
           <div className="enter-zoom relative mx-auto">
-            <div className="hero-photo float size-[250px] sm:size-[330px] lg:size-[400px]">
-              <Image
-                src={site.profileImage.src}
-                alt={site.profileImage.alt}
-                width={site.profileImage.width}
-                height={site.profileImage.height}
-                priority
-                sizes="(min-width: 1024px) 400px, 330px"
+            <div className="hero-photo float relative size-[250px] sm:size-[330px] lg:size-[400px]">
+              <HeroVideo
+                src="/videos/reel.mp4"
+                poster={site.profileImage.src}
+                label={`Short video of ${site.name}`}
                 className="relative size-full rounded-full border-[6px] border-bg object-cover object-top shadow-[var(--shadow)]"
               />
             </div>
