@@ -16,18 +16,18 @@ export const projects: Project[] = [
     slug: "mane-oggarane",
     title: "Mane & Oggarane",
     tagline: "Restaurant ordering & customer-retention platform",
-    status: "live-demo",
-    statusNote: "Public demo · Razorpay test mode only",
+    status: "live",
+    statusNote: "Live site · payments in test mode (Razorpay + Oggattu Pay)",
     categories: ["Full-stack", "Fintech", "Business & Product"],
     featured: true,
     flagship: true,
     summary:
-      "A full-stack ordering site for a Karnataka-cuisine restaurant concept, built as a demo to offer small restaurants their own ordering, payments and retention channel. It covers menu to checkout to Razorpay to kitchen dashboard.",
+      "A full-stack ordering site for a Karnataka-cuisine restaurant concept, built to give small restaurants their own ordering, payments and retention channel. It covers menu to checkout to payment to kitchen dashboard, with two ways to pay: Razorpay, and Oggattu Pay, my own zero-fee direct-UPI checkout.",
     role:
       "Product owner and builder: I defined the requirements and business rules, built it with AI-assisted development, and tested payments, refunds and delivery rules myself.",
     aiAssisted:
       "Code was generated and refactored with Claude and ChatGPT. I wrote the specifications, made the architecture and business decisions, reviewed changes and ran the testing.",
-    tools: ["Next.js", "Supabase", "Razorpay", "Google OAuth", "Vercel"],
+    tools: ["Next.js", "Supabase", "Razorpay", "UPI (Oggattu Pay)", "Google OAuth", "Vercel"],
     cover: {
       src: "/images/mane-oggarane-home.webp",
       alt: "Mane & Oggarane home page with Kannada headline, menu button and restaurant logo",
@@ -37,18 +37,18 @@ export const projects: Project[] = [
     gallery: [
       { src: "/images/mane-oggarane-home.webp", alt: "Home page", caption: "Bilingual (Kannada + English) home page", width: 1286, height: 666 },
       { src: "/images/mane-oggarane-menu.webp", alt: "Menu page with filters, search and basket", caption: "Menu with veg/non-veg filters, search and a live basket; prices are re-confirmed on the server", width: 1286, height: 666 },
-      { src: "/images/mane-oggarane-owner.webp", alt: "Owner control room with order and customer tiles", caption: "Owner \"Control Room\". Figures shown are demo test data, not real sales.", width: 1286, height: 666 },
+      { src: "/images/mane-oggarane-owner.webp", alt: "Owner control room with order and customer tiles", caption: "Owner \"Control Room\". Figures shown are test data, not real sales.", width: 1286, height: 666 },
       { src: "/images/mane-oggarane-rewards.webp", alt: "Rewards page explaining points per ₹100", caption: "Loyalty rewards: points credited only after a verified, delivered order", width: 1286, height: 652 },
     ],
     links: [
-      { label: "Open live demo", href: "https://mane-oggarane-demo.vercel.app", note: "Test payments only, no real orders" },
+      { label: "Open live site", href: "https://mane-oggarane-staging-ajay-b-j.vercel.app", note: "Payments in test mode, no real orders" },
     ],
     flow: {
       title: "How an order flows",
       layers: [
         { label: "Customer", items: ["Browse menu", "Google sign-in", "Basket & checkout", "Track order"] },
         { label: "Next.js app (Vercel)", items: ["Server-side price & fee recalculation", "PIN-code eligibility", "Coupons & rewards", "Order API"] },
-        { label: "Payments", items: ["Razorpay order", "Checkout", "Signature verification", "Webhooks & refunds"] },
+        { label: "Payments", items: ["Razorpay or Oggattu Pay (direct UPI)", "Checkout", "Signature verification", "Webhooks & refunds"] },
         { label: "Data & ops", items: ["Supabase Postgres", "Supabase Auth", "Owner dashboard", "Cooking → dispatch status"] },
       ],
     },
@@ -65,6 +65,7 @@ export const projects: Project[] = [
           "Google sign-in, with login required before ordering",
           "Basket and checkout with a full order breakdown (items, delivery fee, discounts)",
           "Razorpay payment integration with server-side payment verification",
+          "Oggattu Pay: my own zero-fee UPI checkout. Customers pay straight to the restaurant's UPI ID; the order is marked paid only after a bank-signed confirmation passes signature, freshness, amount and duplicate-UTR checks",
           "Payment webhooks and refund management",
           "Order management and an owner dashboard: menu manager, kitchen orders, cooking → dispatch status",
           "Customer order tracking and pickup support",
@@ -89,18 +90,19 @@ export const projects: Project[] = [
           "Payment reliability: making payment confirmation idempotent, so a retried webhook or double click can't create duplicate orders",
           "Refunds and rollback paths when a payment succeeds but the order step fails",
           "Keeping client and server totals consistent once coupons, fees and rewards interact",
-          "Making a public demo safe to share: a test-mode banner, sample data and no real orders",
+          "Making the public site safe to share: a test-mode banner, test-only payments and no real orders",
+          "Adding a second payment method (direct UPI) without a database migration, reusing the existing pay-exactly-once logic",
         ],
       },
       {
         heading: "How it was tested",
         body:
-          "Before calling the staging build approved, I ran a consolidated verification pass covering delivery fees, PIN validation, payments, refunds, idempotency and rollback behaviour. All payments use Razorpay test mode. The demo shows a banner saying no real orders are taken.",
+          "Before calling the staging build approved, I ran a consolidated verification pass covering delivery fees, PIN validation, payments, refunds, idempotency and rollback behaviour. All payments run in test mode (Razorpay test mode and the Oggattu Pay test bank). The site shows a banner saying no real orders are taken.",
       },
       {
         heading: "Where it stands, honestly",
         body:
-          "It's a working staging product and a convincing public demo, but not yet a production-ready SaaS. Before I'd onboard a real restaurant, the remaining work is payment-reservation clean-up and reliability, legal and launch readiness, retention workflows (repeat-order nudges and segments), and a repeatable client-onboarding process.",
+          "It's a working live product in test mode, but not yet a production-ready SaaS. Before I'd onboard a real restaurant, the remaining work is payment-reservation clean-up and reliability, legal and launch readiness, retention workflows (repeat-order nudges and segments), and a repeatable client-onboarding process.",
       },
       {
         heading: "What I learned",
@@ -108,7 +110,7 @@ export const projects: Project[] = [
           "My payments-ops background mattered most in the edge cases: verification, refunds and reconciliation are where real systems break",
           "Writing business rules down before building saves rework, both for me and for an AI coding assistant",
           "AI makes building fast. Testing, reviewing and saying no to scope creep is still on me.",
-          "A demo needs explicit guard-rails (test-mode banners, sample data labels) before you show it to anyone",
+          "A public test site needs explicit guard-rails (test-mode banners, test-only payments) before you show it to anyone",
         ],
       },
     ],
